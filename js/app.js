@@ -1,9 +1,14 @@
 'use strict';
-//    ===================         Arrays of Stuff   ===========================
+//    ===================   Objects as global Vars.
 var assortedGameArrays = {
     enemies: [],
     enemyBullets: [],
     playerBullets: [],
+}
+
+var gameConstants ={
+    distanceMovedOnKeyPress:  10,
+    
 }
 
 //  =====================    Object Literal for Player    ======================
@@ -19,10 +24,10 @@ var Player = {
 //    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
 function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type) {
     this.xPosition = xPosInitial;
-    this.yPoxition = yPosInital;
+    this.yPosition = yPosInital;
     this.xVelocity = xVelocityInitial;
     this.yVelocity = yVelocityInitial;
-    this.xCenterpoint = xCenterpoint;  //  Using a f=-kx model to change velocity.  Possibly with random numbers, because bad-guys are trying to dodge bullets too.
+    this.xCenterpoint = xCenterpoint;  //  Using a f=-kx model to change velocity.
     this.yCenterpoint = yCenterpoint;
     this.image = image;
     this.type = type;
@@ -48,17 +53,19 @@ function PlayerBullet(xPosInitial, xDirectionFacing, yDirectionFacing) {
 //   Function to Move all the Objects.
 function moveAll() {
     moveEnemies();
-    // moveEnemyBullets();
+    moveEnemyBullets();
     // movePlayer();
 }
 
 function moveEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
-        currentEnemy.xPosition += currentEnemy.xVelocity;
+        //calculate velocity at current position
         currentEnemy.xVelocity += (currentEnemy.xCenterpoint - currentEnemy.xPosition);
-        currentEnemy.yPosition += currentEnemy.yVelocity;
         currentEnemy.yVelocity += (currentEnemy.yCenterpoint - currentEnemy.yPosition);
+        //move object
+        currentEnemy.xPosition += currentEnemy.xVelocity;
+        currentEnemy.yPosition += currentEnemy.yVelocity;
     }
 }
 
