@@ -1,6 +1,6 @@
 'use strict';
 //Arrays of Stuff
-var assortedGameArrays{
+var assortedGameArrays = {
     enemies: [],
     bullets: [],
     playerBullets: [],
