@@ -27,6 +27,7 @@ function init() {
 	game.init();
 }
 
+//TESTESTFUCKTEST
 
 /**
  * Define an object to hold all our images for the game so images
