@@ -1,23 +1,23 @@
 'use strict';
-//Arrays of Stuff
-
+//    ===================         Arrays of Stuff   ===========================
 var assortedGameArrays = {
-
-var assortedGameArrays{
-
     enemies: [],
-    bullets: [],
+    enemyBullets: [],
     playerBullets: [],
 }
 
-
+//  =====================    Object Literal for Player    ======================
 var Player = {
     xPosition: 'Canvas /2 ',
-    gunCooldownTimer: 0,
+    gunCooldownTimer: 0,  //   Gets bumped up to a value whenever gun fires.   At 0 can shoot again.
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
+    score: 0,
 };
 
-function Enemy (xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type){
+
+
+//    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
+function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type) {
     this.xPosition = xPosInitial;
     this.yPoxition = yPosInital;
     this.xVelocity = xVelocityInitial;
@@ -29,19 +29,52 @@ function Enemy (xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVeloci
     assortedGameArrays.enemies.push(this);
 };
 
-function EnemyBullet (xPosInitial, yPosInital, totalVelocity){
+function EnemyBullet(xPosInitial, yPosInital, totalVelocity) {
     this.xPosition = xPosInitial;
-    this.yPoxition = yPosInital;
+    this.yPosition = yPosInital;
     this.xVelocity = 0;  //  Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.xPosition-xPosInitial,2));  // Pretty sure this works, but should test with numbers to make sure before implementing.   Alternately, can just have them shoot straight down the Y axis like every other bullet.
     this.yVelocity = totalVelocity; // Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.yPosition-yPosInitial,2));
-    assortedGameArrays.bullets.push(this);
+    assortedGameArrays.enemyBullets.push(this);
 };
 
-function PlayerBullet (xPosInitial, xDirectionFacing, yDirectionFacing){
+function PlayerBullet(xPosInitial, xDirectionFacing, yDirectionFacing) {
     this.xPosition = xPosInitial;
     this.yPosition = 0;  // Should actually be gamax - 1/2 player image height to put the bottom of the image on the bottom of the page.
     this.yVelocity = 'TBD';  // Need to work out a good bullet velocity
     this.xVelocity = 0; //  Will be something else if we reach stretch goal of aiming with mouse.  
     assortedGameArrays.playerBullets.push(this);
 };
+
+//   Function to Move all the Objects.
+function moveAll() {
+    moveEnemies();
+    // moveEnemyBullets();
+    // movePlayer();
+}
+
+function moveEnemies() {
+    for (var i in assortedGameArrays.enemies) {
+        var currentEnemy = assortedGameArrays.enemies[i];
+        currentEnemy.xPosition += currentEnemy.xVelocity;
+        currentEnemy.xVelocity += (currentEnemy.xCenterpoint - currentEnemy.xPosition);
+        currentEnemy.yPosition += currentEnemy.yVelocity;
+        currentEnemy.yVelocity += (currentEnemy.yCenterpoint - currentEnemy.yPosition);
+    }
+}
+
+function moveEnemyBullets() {
+    for (var i in assortedGameArrays.enemyBullets) {
+        var currentBullet = assortedGameArrays.enemyBullets[i];
+        currentBullet.yPosition -= currentBullet.yVelocity;
+    }
+}
+
+// Entire function should be deleted before production.  Exists just to test motion in console.
+function createstuff (){
+    new Enemy(500, -5, 400, 300, -30, 400, 'no image', 'Samwise');
+    new Enemy(200, 30, 180, 800, 0, 600, 'no image', 'Nicholas');
+
+    new EnemyBullet(500, 300, 100);
+    new EnemyBullet(200, 800, 100);
+}
 
