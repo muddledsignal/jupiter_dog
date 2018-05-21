@@ -1,5 +1,48 @@
-body {
-    background-color: rgb(189, 214, 238)
+header {
+    /* width: 960px; */
+    height: 300px;
+    border: dotted blue 5px; 
 }
+
+#logo {
+    position: absolute;
+    margin: 20px 0px 0px 20px;
+}
+
+nav li {
+    display: inline-block;
+    float: right;
+    position: relative;
+    text-align: justify;
+    min-width: 80px;
+    margin-top: 70px;
+    /* margin-right: 40px; */
+}
+
+
+body {
+    /* width: 960px; */
+    background-color: rgb(189, 214, 238);
+    border: dashed red 5px;
+    margin: 0px auto;
+}
+
+/* main {
+    width: 80%;
+    margin: 0px auto;
+} */
+
+/* div #game-instructions {
+    margin: 0px auto;
+    border: solid purple 3px;
+}
+
+canvas {
+    position: absolute;
+	top: 230px;
+	left: 230px;
+    background: transparent;
+    border: 2px red dashed;
+} */
 
 
