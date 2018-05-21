@@ -12,6 +12,6 @@ canvas {
 #main {
     z-index: -1;
 }
-#player {
+#shoot {
     z-index: 0;
 }
