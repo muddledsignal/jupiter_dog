@@ -1,0 +1,17 @@
+canvas {
+    position: absolute;
+				top: 230px;
+				left: 230px;
+                background: transparent;
+                border: 2px red dashed;
+}
+
+#background {
+    z-index: -2;
+}
+#main {
+    z-index: -1;
+}
+#player {
+    z-index: 0;
+}
