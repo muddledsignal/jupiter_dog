@@ -50,7 +50,8 @@ Each category may have a team member leading it. The lead would make To Do's and
 Team members will try to always work on non-master branches.
 Team members will make frequent commits. Good times to do this are after getting a feature to work and before making any big changes.
 
-The Launch Driver will be Suzanne. Only the Lauch Driver can merge pull requests to master, and will let the team know when she merges.
+The Launch Driver will be Suzanne. 
+Only the Lauch Driver can merge pull requests to master, and will let the team know and post in slack when she merges. All Team members will give a thumbs up or reaction in slack once they have pulled from master.
 All team members CAN push to their personal branches at any time.
 
 
