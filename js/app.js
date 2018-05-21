@@ -1,18 +1,22 @@
 'use strict';
-//Arrays of Stuff
+//    ===================         Arrays of Stuff   ===========================
 var assortedGameArrays = {
     enemies: [],
     bullets: [],
     playerBullets: [],
 }
 
-
+//  =====================    Object Literal for Player    ======================
 var Player = {
     xPosition: 'Canvas /2 ',
-    gunCooldownTimer: 0,
+    gunCooldownTimer: 0,  //   Gets bumped up to a value whenever gun fires.   At 0 can shoot again.
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
+    score: 0,
 };
 
+
+
+//    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
 function Enemy (xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type){
     this.xPosition = xPosInitial;
     this.yPoxition = yPosInital;
@@ -40,4 +44,6 @@ function PlayerBullet (xPosInitial, xDirectionFacing, yDirectionFacing){
     this.xVelocity = 0; //  Will be something else if we reach stretch goal of aiming with mouse.  
     assortedGameArrays.playerBullets.push(this);
 };
+
+//   Function to Move all the Objects.
 

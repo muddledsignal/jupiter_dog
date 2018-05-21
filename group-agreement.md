@@ -14,7 +14,7 @@ Asking a specific teammate what they think if they did not give input.
 Making sure to apologize if we accidentally interrupt each other.
 
 
-#Conflict plan: 
+#Conflict plan: g
 ##What will your group do when it encounters conflict? What will your process be to resolve it?
 Remind ourselves and each other to take breaks to help prevent frustration.
 If a discussion gets heated, step away for 15 minutes to cool off and then come back to the discussion.
