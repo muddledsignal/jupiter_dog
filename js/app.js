@@ -11,7 +11,7 @@ function Enemy (xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVeloci
     this.yPoxition = yPosInital;
     this.xVelocity = xVelocityInitial;
     this.yVelocity = yVelocityInitial;
-    this.xCenterpoint = xCenterpoint;
+    this.xCenterpoint = xCenterpoint;  //  Using a f= -kx model to change velocity.  Possibly with random numbers, because bad-guys are trying to dodge bullets too.
     this.yCenterpoint = yCenterpoint;
     this.image = image;
     this.type = type;
@@ -20,8 +20,8 @@ function Enemy (xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVeloci
 function EnemyBullet (xPosInitial, yPosInital, totalVelocity){
     this.xPosition = xPosInitial;
     this.yPoxition = yPosInital;
-    this.xVelocity = Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.xPosition-xPosInitial,2));
-    this.yVelocity = Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.yPosition-yPosInitial,2));
+    this.xVelocity = 0;  //  Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.xPosition-xPosInitial,2));  // Pretty sure this works, but should test with numbers to make sure before implementing.   Alternately, can just have them shoot straight down the Y axis like every other bullet.
+    this.yVelocity = totalVelocity; // Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.yPosition-yPosInitial,2));
 };
 
 function PlayerBullet (xPosInitial, xDirectionFacing, yDirectionFacing){
