@@ -6,19 +6,15 @@ var assortedGameArrays = {
     playerBullets: [],
 }
 
-var gameVariables ={
-    xDirection: 0,
-}
-
-
-
 //  =====================    Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
+    yPosition: 8
     gunCooldownTimer: 0,  //   Gets bumped up to a value whenever gun fires.   At 0 can shoot again.
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
     score: 0,
-    moveSpeed: 10
+    moveSpeed: 10,
+    radius: 8,
 };
 
 
@@ -79,16 +75,44 @@ function moveEnemyBullets() {
     }
 }
 
-function movePlayer(xDirection){
-    player.xPosition += xDirection*player.moveSpeed;
+function movePlayer(xDirection) {
+    player.xPosition += xDirection * player.moveSpeed;
 }
 
-// Entire function should be deleted before production.  Exists just to test motion in console.
-function createstuff (){
-    new Enemy(500, -5, 400, 300, -30, 400, 'no image', 'Samwise');
-    new Enemy(200, 30, 180, 800, 0, 600, 'no image', 'Nicholas');
+function detectCollisions() {
+    var playerDead = false;
 
-    new EnemyBullet(500, 300, 100);
-    new EnemyBullet(200, 800, 100);
-}
+    // look to see if enemy space-ships are colliding with the player
+    for (var i in assortedGameArrays.enemies) {
+        currentEnemy = assortedGameArrays.enemies[i]
 
+        //  Is the Y value between Player +/- Radius   (Also, may want to consider including object radius)
+        if ((currentEnemy.yPosition > (player.yPosition - player.radius))
+            &
+            (currentEnemy.yPosition < (player.yPosition + player.radius))) {
+
+            //  Is the x value between Player +/- Radius
+            if ((currentEnemy.xPosition > (player.xPosition - player.radius))
+                &
+                (currentEnemy.xPosition < (player.xPosition + player.radius))) {
+                    playerDead = true;
+                    //Run function for when player gets hit by ball of death.
+            }
+        }
+    }  //   End looking to see if enemy space ships are colliding with player
+
+
+    //  Look to see if the player has been hit by an enemy bullet.
+    for (var i in assortedGameArrays.enemyBullets){
+
+    }
+
+
+    // Entire function should be deleted before production.  Exists just to test motion in console.
+    function createstuff() {
+        new Enemy(500, -5, 400, 300, -30, 400, 'no image', 'Samwise');
+        new Enemy(200, 30, 180, 800, 0, 600, 'no image', 'Nicholas');
+
+        new EnemyBullet(500, 300, 100);
+        new EnemyBullet(200, 800, 100);
+    }
