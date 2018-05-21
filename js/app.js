@@ -6,17 +6,19 @@ var assortedGameArrays = {
     playerBullets: [],
 }
 
-var gameConstants ={
-    distanceMovedOnKeyPress:  10,
-    
+var gameVariables ={
+    xDirection: 0,
 }
 
+
+
 //  =====================    Object Literal for Player    ======================
-var Player = {
-    xPosition: 'Canvas /2 ',
+var player = {
+    xPosition: 400,  // should be Canvas Width /2, to start in the center
     gunCooldownTimer: 0,  //   Gets bumped up to a value whenever gun fires.   At 0 can shoot again.
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
     score: 0,
+    moveSpeed: 10
 };
 
 
@@ -54,18 +56,19 @@ function PlayerBullet(xPosInitial, xDirectionFacing, yDirectionFacing) {
 function moveAll() {
     moveEnemies();
     moveEnemyBullets();
-    // movePlayer();
+    movePlayer();
 }
 
 function moveEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
-        //calculate velocity at current position
-        currentEnemy.xVelocity += (currentEnemy.xCenterpoint - currentEnemy.xPosition);
-        currentEnemy.yVelocity += (currentEnemy.yCenterpoint - currentEnemy.yPosition);
         //move object
         currentEnemy.xPosition += currentEnemy.xVelocity;
         currentEnemy.yPosition += currentEnemy.yVelocity;
+
+        //calculate velocity at current position  (used next iteration to move objects)
+        currentEnemy.xVelocity += (currentEnemy.xCenterpoint - currentEnemy.xPosition);
+        currentEnemy.yVelocity += (currentEnemy.yCenterpoint - currentEnemy.yPosition);
     }
 }
 
@@ -74,6 +77,10 @@ function moveEnemyBullets() {
         var currentBullet = assortedGameArrays.enemyBullets[i];
         currentBullet.yPosition -= currentBullet.yVelocity;
     }
+}
+
+function movePlayer(xDirection){
+    player.xPosition += xDirection*player.moveSpeed;
 }
 
 // Entire function should be deleted before production.  Exists just to test motion in console.
