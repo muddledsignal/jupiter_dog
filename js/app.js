@@ -65,7 +65,7 @@ player.yPosition = 3,  // globalVariables.maxCanvasY - (5 + this.radius)
 function EnemyBullet(xPosInitial, yPosInital) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
-    this.yVelocity = globalVariables.enemyBulletSpeed; // Math.sqrt(Math.pow(totalVelocity,2) + math.pow(player.yPosition-yPosInitial,2));
+    this.yVelocity = globalVariables.enemyBulletSpeed; 
     assortedGameArrays.enemyBullets.push(this);
 };
 
@@ -256,7 +256,7 @@ function moveAllTheBullets() {
     for (var i = 1; i < player.bulletSpeed + 1; i += 2) {
         moveEnemyBullets();
         moveEnemyBullets();
-        detectCollisionsPlayerHitByBullet();
+        detectCollisionsPlayerHitByBullet();  //  For loop to check all enemy bullets needs to go in here
     }
 }
 
@@ -267,7 +267,7 @@ function newExplosions() {
             new Explosion(currentEnemy.xPosition, currentEnemy.yPosition)
         }
     }
-}
+}  ////   do I need this?   Double check.
 
 function enemyFire() {
     for (var i in assortedGameArrays.enemies) {
