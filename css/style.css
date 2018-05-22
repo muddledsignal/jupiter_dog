@@ -1,4 +1,55 @@
-body {
+
+header {
+    border: dashed red 3px;
+    position:relative;
+    background-image: url(../img/galaxybackground.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#logo{
+    vertical-align: bottom; 
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+nav ul{
+    margin-right: 20px;
+}
+nav li{
+    display:inline-block;
+    float:right;
+    padding-top:74px;
+    margin-left: 20px;
+    border: dashed blue 1px;
+}
+
+#outer-hero {
+    position:relative;
+    border: dashed black 3px;
+    height:230px;
+    /* background-image: url(../img/galaxybackground.gif); */
+    
+    
+}
+#outer-hero h1 {
+    position: absolute;
+    top:30%;
+    left:50%;
+    /* right:30%; */
+    transform: translate(-50%, -50%);
+    border: dashed red 3px;
+    font-size: 40px;
+    color:white;
+    text-align: center;
+
+
+    
+}
+
+
+/* body {
     background-color: rgb(189, 214, 238)
 }
 
@@ -9,4 +60,4 @@ canvas {
                 background: transparent;
                 border: 2px red dashed;
 }
-
+ */
