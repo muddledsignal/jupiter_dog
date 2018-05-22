@@ -1,6 +1,16 @@
+/* 
+font-family: 'Orbitron', sans-serif;
+font-family: 'VT323', monospace;
+font-family: 'Press Start 2P', cursive;
+font-family: 'Gugi', cursive;
+font-family: 'Do Hyeon', sans-serif;
+font-family: 'Saira Condensed', sans-serif;
+font-family: 'Homenaje', sans-serif;
+font-family: 'Bungee Inline', cursive; */
+
 
 header {
-    border: dashed red 3px;
+    /* border: dashed red 3px; */
     position:relative;
     background-image: url(../img/galaxybackground.gif);
     background-position: center;
@@ -22,15 +32,21 @@ nav li{
     float:right;
     padding-top:74px;
     margin-left: 20px;
-    border: dashed blue 1px;
+    /* border: dashed blue 1px; */
+    
+}
+nav a{
+    color:white;
+    font-family:'Arial, Helvetica', sans-serif; 
+    font-size: 15px;  
+    text-transform: uppercase;
+    /* font-weight: bold; */
 }
 
 #outer-hero {
     position:relative;
-    border: dashed black 3px;
+    /* border: dashed black 3px; */
     height:230px;
-    /* background-image: url(../img/galaxybackground.gif); */
-    
     
 }
 #outer-hero h1 {
@@ -39,25 +55,73 @@ nav li{
     left:50%;
     /* right:30%; */
     transform: translate(-50%, -50%);
-    border: dashed red 3px;
-    font-size: 40px;
+    /* border: dashed red 3px; */
+    font-size: 100px;
     color:white;
     text-align: center;
+    font-stretch: condensed;
+    /* font-weight: 900; */
 
+/* font-family: 'Orbitron', sans-serif; */
+/* font-family: 'VT323', monospace; */
+/* font-family: 'Press Start 2P', cursive;  */
+/* font-family: 'Gugi', cursive; */
+font-family: 'Do Hyeon', sans-serif;
+/* font-family: 'Saira Condensed', sans-serif; */
+/* font-family: 'Homenaje', sans-serif; */
+/* font-family: 'Bungee Inline', cursive; */
 
+}
+
+main{
+    margin:30px 50px 0px 20px;
+}
+aside{
+    /* position:relative; */
+    /* border: dashed black 3px; */
+    height:230px;
+    /* border: dashed red 1px; */
+    float: left;
+    width:25%;
     
 }
+h2{
+    position: absolute;
+    /* border: dashed blue 1px; */
+    /* padding-right: 15%; */
+    background-color: white;
+    font-weight: bolder;
+    height:25px;
+    font-size: 20px;
+    /* border-bottom: solid #999999 3px; */
+    font-family:'Arial, Helvetica', sans-serif; 
+    padding-left: 10px;
 
-
-/* body {
-    background-color: rgb(189, 214, 238)
 }
+#instructions p{
+    border: solid #ddd 4px;
+    margin-top: 30px;
+    overflow:scroll;
+    height:300px;
+    padding:10px;
+    border-radius: 4px;
+
+}
+
+
+
+
+ /* body {
+    background-color: rgb(189, 214, 238)
+} */
 
 canvas {
     position: absolute;
-				top: 230px;
-				left: 230px;
+				top: 90%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
                 background: transparent;
                 border: 2px red dashed;
 }
- */
+
