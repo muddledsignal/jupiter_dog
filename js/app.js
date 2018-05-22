@@ -18,7 +18,10 @@ var globalVariables = {
     nicholasTimerResetValue: 299,
     kokoTimerResetValue: 499,
     samTimerResetVAlue: 1999,
+    mainCanvas: document.getElementById("background"),
 }
+
+    globalVariables.ctx = globalVariables.mainCanvas.getContext('2d');
 
 //  =====================    Object Literal for Player    ======================
 var player = {
@@ -28,44 +31,44 @@ var player = {
     gunCooldownTimerResetsTo: 20,
     score: 0,
     moveSpeed: 10,
-    radius: 8,
+    radius: 30,
     bulletSpeed: 6,
     score: 0,
     dead: false,
 };
 
-player.yPosition = 3,  // globalVariables.maxCanvasY - (5 + this.radius)
+player.yPosition = 3;  // globalVariables.maxCanvasY - (5 + this.radius)
 
-    //    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
-    function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, radius, image, type) {
-        this.xPosition = xPosInitial;
-        this.yPosition = yPosInital;
-        this.xVelocity = xVelocityInitial;
-        this.yVelocity = yVelocityInitial;
-        this.radius = radius;
-        this.xCenterpoint = xCenterpoint;  //  Using a f=-kx model to change velocity.
-        this.yCenterpoint = yCenterpoint;
-        this.image = image;
-        this.type = type;
-        this.dead = false;
-        this.gunCooldownTimer = 0
-        if (type = 'Nicholas') {
-            this.gunCooldownTimerResetsTo = 20;
-        }
-        else if (type = 'Koko') {
-            this.gunCooldownTimerResetsTo = 30;
-        }
-        else if (type = 'Sam') {
-            this.gunCooldownTimerResetsTo = 10;
-        }
+//    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
+function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, radius, image, type) {
+    this.xPosition = xPosInitial;
+    this.yPosition = yPosInital;
+    this.xVelocity = xVelocityInitial;
+    this.yVelocity = yVelocityInitial;
+    this.radius = radius;
+    this.xCenterpoint = xCenterpoint;  //  Using a f=-kx model to change velocity.
+    this.yCenterpoint = yCenterpoint;
+    this.image = image;
+    this.type = type;
+    this.dead = false;
+    this.gunCooldownTimer = 0
+    if (type = 'Nicholas') {
+        this.gunCooldownTimerResetsTo = 20;
+    }
+    else if (type = 'Koko') {
+        this.gunCooldownTimerResetsTo = 30;
+    }
+    else if (type = 'Sam') {
+        this.gunCooldownTimerResetsTo = 10;
+    }
 
-        assortedGameArrays.enemies.push(this);
-    };
+    assortedGameArrays.enemies.push(this);
+};
 
 function EnemyBullet(xPosInitial, yPosInital) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
-    this.yVelocity = globalVariables.enemyBulletSpeed; 
+    this.yVelocity = globalVariables.enemyBulletSpeed;
     assortedGameArrays.enemyBullets.push(this);
 };
 
@@ -201,8 +204,9 @@ function checkNRemoveExplosions() {
 //  ===========    Function to handle Enemies Dying  ========================
 function deadEnemies() {
     for (var i = assortedGameArrays.enemies.length; i > -1; i--) {
-        if (assortedGameArrays.enemies[i].dead) {
-            new Explosion(assortedGameArrays.enemies[i].xPosition, assortedGameArrays.enemies[i].yPosition);
+        var currentEnemy = assortedGameArrays.enemies[i];
+        if (currentEnemy.dead) {
+            new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
             assortedGameArrays.enemies.splice(i, 1);
         }
     }
@@ -260,18 +264,11 @@ function moveAllTheBullets() {
     }
 }
 
-function newExplosions() {
-    for (var i in assortedGameArrays.enemies) {
-        var currentEnemy = assortedGameArrays.enemies[i];
-        if (currentEnemy.dead) {
-            new Explosion(currentEnemy.xPosition, currentEnemy.yPosition)
-        }
-    }
-}  ////   do I need this?   Double check.
 
 function enemyFire() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
+        currentEnemy.gunCooldownTimer --;
         if (currentEnemy.gunCooldownTimer < 1) {
             new EnemyBullet(currentEnemy.xPosition, currentEnemy.yPosition);
             currentEnemy.gunCooldownTimer = currentEnemy.gunCooldownTimerResetsTo;
@@ -280,6 +277,24 @@ function enemyFire() {
 }
 
 //  ===    First draft of infinite while loop.  Put inside a function instead of while loop to keep it from actually running.
+
+function createCanvas(){
+    globalVariables.ctx.fillStyle = 'white';
+    globalVariables.ctx.fillRect(0, 0, 1200, 600);
+}
+
+function drawPlayer(xPosition, yPosition){
+    globalVariables.ctx.fillStyle = 'green';
+    globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
+    
+}
+
+function drawEnemy(xPosition, yPosition){
+    globalVariables.ctx.fillStyle = 'red';
+    var enemyRadius = assortedGameArrays.enemies[0].radius;
+    globalVariables.ctx.arc(xPosition, yPosition, enemyRadius, 0, 2*Math.PI);
+    globalVariables.ctx.fill();
+}
 
 function while2equals2() {
 
@@ -294,7 +309,7 @@ function while2equals2() {
     //Explosions:
     checkNRemoveExplosions();
 
-    newExplosions();
+    deadEnemies();
 
     detectCollisionsPlayerHitByEnemy();
 
@@ -314,8 +329,23 @@ function while2equals2() {
 
 
 // Entire function should be deleted before production.  Exists just to test motion in console.
-function createstuff() {
 
-    new Enemy(50, 0, 50, 20, 0, 20, 10, 'no image', 'no type')
+function testDrawingPlayer() {
+    player.xPosition = 300;
+    player.yPosition = 550;
+    for (var i = 0; i < 20; i++) {
+        movePlayer(1);
+        createCanvas();
+        drawPlayer(player.xPosition, player.yPosition);
+        alert('Look!')
+    }  
+}
 
+function testDrawingVillian(){
+    new Enemy (100,3,110,550,2,550,50,'noImage','Nicholas');
+    for (var i=0; i < 10; i++){
+        moveEnemies();
+        createCanvas();
+        drawEnemy(assortedGameArrays.enemies[0].xPosition, assortedGameArrays.enemies[0].yPosition);
+    }
 }
