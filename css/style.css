@@ -29,7 +29,7 @@ nav ul{
 }
 nav li{
     display:inline-block;
-    float:right;
+    float: right;
     padding-top:74px;
     margin-left: 20px;
     /* border: dashed blue 1px; */
