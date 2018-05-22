@@ -21,7 +21,7 @@ var globalVariables = {
     mainCanvas: document.getElementById("background"),
 }
 
-    globalVariables.ctx = globalVariables.mainCanvas.getContext('2d');
+globalVariables.ctx = globalVariables.mainCanvas.getContext('2d');
 
 //  =====================    Object Literal for Player    ======================
 var player = {
@@ -35,6 +35,8 @@ var player = {
     bulletSpeed: 6,
     score: 0,
     dead: false,
+    movementDirection: 0,
+    shootsgun: false,
 };
 
 player.yPosition = 3;  // globalVariables.maxCanvasY - (5 + this.radius)
@@ -268,7 +270,7 @@ function moveAllTheBullets() {
 function enemyFire() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
-        currentEnemy.gunCooldownTimer --;
+        currentEnemy.gunCooldownTimer--;
         if (currentEnemy.gunCooldownTimer < 1) {
             new EnemyBullet(currentEnemy.xPosition, currentEnemy.yPosition);
             currentEnemy.gunCooldownTimer = currentEnemy.gunCooldownTimerResetsTo;
@@ -276,24 +278,57 @@ function enemyFire() {
     }
 }
 
+document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);  //  Should be inside the initialize Game function
+
+function keyPressedEvent(event) {
+
+    if (event.key === 'a') {
+        player.movementDirection = -1
+    }
+    else if (event.key === 'd') {
+        player.movementDirection = 1
+    }
+    else if (event.key === ' ') {
+        player.shootsgun = true
+    }
+
+
+    console.log(event.key);
+}
+
+
 //  ===    First draft of infinite while loop.  Put inside a function instead of while loop to keep it from actually running.
 
-function createCanvas(){
+function createCanvas() {
     globalVariables.ctx.fillStyle = 'white';
     globalVariables.ctx.fillRect(0, 0, 1200, 600);
 }
 
-function drawPlayer(xPosition, yPosition){
+function drawPlayer(xPosition, yPosition) {
     globalVariables.ctx.fillStyle = 'green';
     globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
-    
+
 }
 
-function drawEnemy(xPosition, yPosition){
+function drawEnemy(xPosition, yPosition) {
     globalVariables.ctx.fillStyle = 'red';
     var enemyRadius = assortedGameArrays.enemies[0].radius;
-    globalVariables.ctx.arc(xPosition, yPosition, enemyRadius, 0, 2*Math.PI);
+    globalVariables.ctx.arc(xPosition, yPosition, enemyRadius, 0, 2 * Math.PI);
     globalVariables.ctx.fill();
+}
+
+function drawBullet(xPosition, yPosition) {
+    globalVariables.ctx.fillStyle = "purple";
+    globalVariables.ctx.fillRect(xPosition, yPosition, 3, 5);
+}
+
+
+function playershootsgun() {
+    if (player.gunCooldownTimer = 0) {
+        new PlayerBullet();
+        player.gunCooldownTimer = player.gunCooldownTimerResetsTo;
+        player.shootsgun = false
+    }
 }
 
 function while2equals2() {
@@ -321,6 +356,11 @@ function while2equals2() {
 
     enemyFire();
 
+    // did the player shoot his gun?
+    if (player.shootsgun) {
+        playershootsgun();
+    }
+
     //  STILL NEED STUFF TO RE-RENDER THE PAGE
 
 }
@@ -338,14 +378,15 @@ function testDrawingPlayer() {
         createCanvas();
         drawPlayer(player.xPosition, player.yPosition);
         alert('Look!')
-    }  
+    }
 }
 
-function testDrawingVillian(){
-    new Enemy (100,3,110,550,2,550,50,'noImage','Nicholas');
-    for (var i=0; i < 10; i++){
+function testDrawingVillian() {
+    new Enemy(100, 3, 110, 550, 2, 550, 50, 'noImage', 'Nicholas');
+    for (var i = 0; i < 10; i++) {
         moveEnemies();
         createCanvas();
         drawEnemy(assortedGameArrays.enemies[0].xPosition, assortedGameArrays.enemies[0].yPosition);
     }
 }
+
