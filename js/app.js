@@ -28,6 +28,7 @@ var player = {
     radius: 8,
     bulletSpeed: 6,
     score: 0,
+    dead: false,
 };
 
 player.yPosition = 3,  // globalVariables.maxCanvasY - (5 + this.radius)
@@ -43,6 +44,7 @@ function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocit
     this.yCenterpoint = yCenterpoint;
     this.image = image;
     this.type = type;
+    this.dead = false;
     assortedGameArrays.enemies.push(this);
 };
 
@@ -107,8 +109,7 @@ function movePlayerBullets() {
 //   ===========   Collision detection functions   ========================================
 
 function detectCollisionsPlayerHitByEnemy(index) {
-    // looks to see if enemy space-ships are colliding with the player
-
+    // looks to see if enemy space-ships are colliding with the player  Treats player as square.
     var currentEnemy = assortedGameArrays.enemies[index]
     //  Is the Y value between Player +/- Radius   (Also, may want to consider including object radius)
     if ((currentEnemy.yPosition > (player.yPosition - player.radius))
@@ -119,8 +120,7 @@ function detectCollisionsPlayerHitByEnemy(index) {
         if ((currentEnemy.xPosition > (player.xPosition - player.radius))
             &
             (currentEnemy.xPosition < (player.xPosition + player.radius))) {
-            playerDead = true;
-            //Run function for when player gets hit by ball of death.
+            player.dead = true;
         }
     }
 }  //   End looking to see if enemy space ships are colliding with player
@@ -136,7 +136,7 @@ function detectCollisionsPlayerHitByBullet(index) {
         if ((currentBullet.xPosition > (player.xPosition - player.radius))
             &
             (currentBullet.xPosition < (player.xPosition + player.radius))) {
-            playerDead = true;
+            player.dead = true;
             //Run function for when player gets hit by ball of death.
         }
     }
@@ -151,7 +151,7 @@ function detectCollisionsEnemyHitByBullet(indexEnemy, indexBullet) {
 
     //See if total distance is < radius
     if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) < Math.pow(radius,2)) {
-        new Explosion (assortedGameArrays.enemies[indexEnemy].xPosition, assortedGameArrays.enemies[indexEnemy].yPosition)
+        assortedGameArrays.enemies[indexEnemy].dead = true;
     }
 }
 
@@ -182,6 +182,22 @@ function checkNRemoveExplosions(){
         assortedGameArrays.explosionLocations.count --;
     }
 }
+
+//  =======  End of section dedicated to page cleanup   ==================================
+
+//  ===========    Function to handle Enemies Dying  ========================
+function deadEnemies(){
+    for (var i = assortedGameArrays.enemies.length; i > -1; i--){
+        if (assortedGameArrays.enemies[i].dead){
+            new Explosion (assortedGameArrays.enemies[i].xPosition, assortedGameArrays.enemies[i].yPosition);
+            assortedGameArrays.enemies.splice(i,1);
+        }
+    }
+}
+
+//  ==========   
+
+
 
 
 // Entire function should be deleted before production.  Exists just to test motion in console.
