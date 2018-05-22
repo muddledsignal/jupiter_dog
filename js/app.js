@@ -6,10 +6,14 @@ var assortedGameArrays = {
     playerBullets: [],
 }
 
+var globalVariables = {
+    enemyBulletSpeed = 1
+}
+
 //  =====================    Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
-    yPosition: 8
+    yPosition: 8,
     gunCooldownTimer: 0,  //   Gets bumped up to a value whenever gun fires.   At 0 can shoot again.
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
     score: 0,
@@ -104,9 +108,21 @@ function detectCollisions() {
 
     //  Look to see if the player has been hit by an enemy bullet.
     for (var i in assortedGameArrays.enemyBullets){
+        currentBullet = assortedGameArrays.enemyBullets[i];
+        if ((currentBullet.yPosition > (player.yPosition - player.radius))
+            &
+            (currentBullet.yPosition < (player.yPosition + player.radius))) {
 
+            //  Is the x value between Player +/- Radius
+            if ((currentBullet.xPosition > (player.xPosition - player.radius))
+                &
+                (currentBullet.xPosition < (player.xPosition + player.radius))) {
+                    playerDead = true;
+                    //Run function for when player gets hit by ball of death.
+            }
+        }
     }
-
+}
 
     // Entire function should be deleted before production.  Exists just to test motion in console.
     function createstuff() {
