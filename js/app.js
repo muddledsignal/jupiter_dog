@@ -19,10 +19,9 @@ var globalVariables = {
     kokoTimerResetValue: 500,
     samTimerResetVAlue: 2000,
     mainCanvas: document.getElementById("background"),
-    ctx: document.getElementById("background").getContext('2d')
+    ctx: document.getElementById("background").getContext('2d'),
+    enemyRadius: 30,
 }
-
-//   globalVariables.ctx = globalVariables.mainCanvas.getContext('2d');
 
 //  =====================    Object Literal for Player    ======================
 var player = {
@@ -41,15 +40,14 @@ var player = {
     velocity: 50,
 };
 
-player.yPosition = 320; // globalVariables.maxCanvasY - (5 + player.radius);
+player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
 
 //    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
-function Enemy(xPosInitial, xVelocityInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, radius, image, type) {
+function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
-    this.xVelocity = xVelocityInitial;
+    this.xVelocity = 0;
     this.yVelocity = yVelocityInitial;
-    this.radius = radius;
     this.xCenterpoint = xCenterpoint;
     this.yCenterpoint = yCenterpoint;
     this.image = image;
@@ -97,12 +95,12 @@ function moveAllEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
         //move object
-        currentEnemy.xPosition += currentEnemy.xVelocity;
-        currentEnemy.yPosition += currentEnemy.yVelocity;
+        currentEnemy.xPosition += 0.2*currentEnemy.xVelocity;
+        currentEnemy.yPosition += 0.2*currentEnemy.yVelocity;
 
         //calculate velocity at current position  (used next iteration to move objects)
-        currentEnemy.xVelocity += (currentEnemy.xCenterpoint - currentEnemy.xPosition);
-        currentEnemy.yVelocity += (currentEnemy.yCenterpoint - currentEnemy.yPosition);
+        currentEnemy.xVelocity += 0.1*(currentEnemy.xCenterpoint - currentEnemy.xPosition);
+        currentEnemy.yVelocity += 0.1*(currentEnemy.yCenterpoint - currentEnemy.yPosition);
     }
 }
 
@@ -176,7 +174,7 @@ function detectAllEnemieHitByBullets() {
             //  Determine X and Y distance between bullet and center of alien object
             var deltaX = assortedGameArrays.enemies[i].xPosition - assortedGameArrays.playerBullets[j].xPosition;
             var deltaY = assortedGameArrays.enemies[i].yPosition - assortedGameArrays.playerBullets[j].yPosition;
-            var radius = assortedGameArrays.enemies[i].radius;
+            var radius = globalVariables.enemyRadius;
 
             //See if total distance is < radius
             if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) < Math.pow(radius, 2)) {
@@ -224,7 +222,7 @@ function checkNRemoveExplosions() {
 
 //  ===========    Function to handle Enemies Dying  ========================
 function handleAllDeadEnemies() {
-    for (var i = assortedGameArrays.enemies.length -1; i > -1; i--) {
+    for (var i = assortedGameArrays.enemies.length - 1; i > -1; i--) {
         var currentEnemy = assortedGameArrays.enemies[i];
         if (currentEnemy.dead) {
             // new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
@@ -233,59 +231,55 @@ function handleAllDeadEnemies() {
     }
 }
 
-//  enemy Spawn function determines if the countdown timer for enemy spawns is at 0.
+//   Spawn enemy function determines if the countdown timer for enemy spawns is at 0.
 //  If so, it spawns an enemy, resets the timer, and decrements the reset value.
-function enemySpawn() {
+function newEnemyParameters(){
+
+    var newEnemyObject = {
+    xPosInitial: Math.random()*(globalVariables.maxCanvasX-300)+150,
+    xCenterpoint: Math.random()*(globalVariables.maxCanvasX-800)+400,
+    yPosInitial: Math.random()*(globalVariables.maxCanvasY-300)+150,
+    yCenterpoint: Math.random()*(globalVariables.maxCanvasY-400)+200,
+    yVelocityInitial: Math.random()*15,};
+
+    return newEnemyObject;
+}
+
+function spawnEnemies() {
     globalVariables.timeTillNicholasSpawns--;
     globalVariables.timeTillKokoSpawns--;
     globalVariables.timeTillSamSpawns--;
+    var no = newEnemyParameters();
+
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns = 0) {
 
-        //create a Nicholas.   Need to work out some Math
-
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas Filepath', 'Nicholas', )
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
         globalVariables.nicholasTimerResetValue--;
-    }
+    // }
 
     if (globalVariables.timeTillKokoSpawns = 0) {
 
-        //create a Koko.   Need to work out some Math
-
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko Filepath', 'Koko', )
         globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
         globalVariables.kokoTimerResetValue--;
     }
 
     if (globalVariables.timeTillSamSpawns = 0) {
 
-        //create a Sam.   Need to work out some Math
-
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam Filepath', 'Sam', )
         globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
         globalVariables.samTimerResetValue--;
-    }
-
-}
-
-//  Move All the Bullets function moves the player and the enemy bullets by 5px,
-//  checks to see if anyone has been shot, and if so flags them as dead.
-function moveAllTheBullets() {
-    movePlayerBullets();
-    for (var j in assortedGameArrays.enemies) {
-        for (var k in assortedGameArrays.playerBullets) {
-            detectCollisionsEnemyHitByBullet(j, k)
-        }
-    }
-
-    for (var i in assortedGameArrays.enemyBullets) {
-        moveEnemyBullets();
-        detectCollisionsPlayerHitByBullet();  //  For loop to check all enemy bullets needs to go in here
     }
 }
 
 //  Enemy Fire function decrements  the gun cooldown timer, then has each enemy
 //  Shoot his gun if his timer is 0, and reset timer to max value.
-function enemyFire() {
+function allEnemiesFireAtWill() {
+    //sorry Will!
+
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
         currentEnemy.gunCooldownTimer--;
@@ -296,9 +290,12 @@ function enemyFire() {
     }
 }
 
-document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);  //  Should be inside the initialize Game function
 
-//  Handles keypress events
+//  ==========================   Event Listeners & Event Handlers  =========================
+document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);  //  Should be inside the not-yet-existant initialize Game function
+
+document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);  //  This too should be inside the initialize Game function.   
+
 function keyPressedEvent(event) {
 
     if (event.key === 'a') {
@@ -311,6 +308,12 @@ function keyPressedEvent(event) {
         player.shootsgun = true
     }
 
+}
+
+function keyDepressedEvent(event) {
+    if (event.key === 'a' || event.key === 'd') {
+        player.movementDirection = 0
+    }
 }
 
 //  Player Shoots gun function is called when player.shootsgun is true.   It checks to see if the player can
@@ -340,9 +343,13 @@ function drawPlayer() {
 
 function drawEnemy(xPosition, yPosition) {
     globalVariables.ctx.fillStyle = 'red';
-    var enemyRadius = assortedGameArrays.enemies[0].radius;
+    globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
+
+    /*     globalVariables.ctx.fillStyle = 'red';
+    var enemyRadius = globalVariables.enemyRadius;
     globalVariables.ctx.arc(xPosition, yPosition, enemyRadius, 0, 2 * Math.PI);
-    globalVariables.ctx.fill();
+    globalVariables.ctx.fill(); */
+    //  Changed to drawing squares because the fill was god-awful. when objects move
 }
 
 function drawBullet(xPosition, yPosition) {
@@ -352,19 +359,31 @@ function drawBullet(xPosition, yPosition) {
 
 //  ==========  End section on rendering to page
 
-
-new Enemy(200, 0, 230, 100, -10, 90, 20, 'no-image', 'sam');
-new Enemy(400, 0, 415, 300, -12, 280, 20, 'no-image', 'nicholas');
-//  ===   draft of infinite while loop.  Put inside a function instead of while loop to keep it from actually running.
-new EnemyBullet(400, 150);
-
-function inGame() {
+//  ==========   This section is nothing but functions that run other functions.   
 
 
+function moveEverything() {
 
-    new PlayerBullet();
+    movePlayer();
 
-    // while (2 === 2){
+    moveAllPlayerBullets();
+
+    moveAllEnemyBullets();
+
+    moveAllEnemies();
+
+    removeStrayBullets();
+}
+
+function detectEverything() {
+    detectAllEnemieHitByBullets();
+
+    detectCollisionsBetweenPlayerAndAllEnemies();
+
+    detectCollisionsBetweenPlayerAndAnyBullet();
+}
+
+function drawEverything() {
     createCanvas();
     drawPlayer();
     // this for loop draws all of our enemies
@@ -383,79 +402,37 @@ function inGame() {
         var currentBullet = assortedGameArrays.enemyBullets[i];
         drawBullet(currentBullet.xPosition, currentBullet.yPosition);
     }
-
-    movePlayer();
-
-    moveAllPlayerBullets();
-
-    moveAllEnemyBullets();
-
-    moveAllEnemies();
-
-    removeStrayBullets();
-
-    detectAllEnemieHitByBullets();
-
-    detectCollisionsBetweenPlayerAndAllEnemies();
-
-    detectCollisionsBetweenPlayerAndAnyBullet();
-
-    handleAllDeadEnemies();
 }
 
-function while2equals2() {
-
-    enemySpawn();
-    moveAllTheBullets();
-
-    movePlayer(DIRECTION_SHIT_FROM_EVENT_LISTENER_GOES_HERE);
-
-    moveEnemies();
-
-    //Explosions:
-    checkNRemoveExplosions();
-
-    deadEnemies();
-
-    detectCollisionsPlayerHitByEnemy();
-
-    if (player.dead) {
-        //  CALL THE ENDGAME FUNCTION HERE
-    }
-
-    //  Check to see if any enemies should fire their weapons
-
-    enemyFire();
-    // did the player shoot his gun?
+function everythingShoots(){
     if (player.shootsgun) {
         playershootsgun();
     }
 
+    allEnemiesFireAtWill();
 }
 
+//  =========   End of functions that run other functions section.
 
 
+new Enemy(100, 500, 300, -100, 280, 20, 'no-image', 'nicholas');
 
-// Entire function should be deleted before production.  Exists just to test motion in console.
 
-function testDrawingPlayer() {
-    player.xPosition = 300;
-    player.yPosition = 550;
-    for (var i = 0; i < 20; i++) {
-        movePlayer(1);
-        createCanvas();
-        drawPlayer(player.xPosition, player.yPosition);
-        alert('Look!')
+//  ===   draft of infinite while loop.  Put inside a function instead of while loop to keep it from actually running.
+
+function inGame() {
+
+    drawEverything();
+    moveEverything();
+    detectEverything();
+
+    handleAllDeadEnemies();
+
+    everythingShoots();
+    
+    //  Is the Player dead?
+    if (player.dead) {
+        console.log('damn');
     }
+   
 }
-
-function testDrawingVillian() {
-    new Enemy(100, 3, 110, 550, 2, 550, 50, 'noImage', 'Nicholas');
-    for (var i = 0; i < 10; i++) {
-        moveEnemies();
-        createCanvas();
-        drawEnemy(assortedGameArrays.enemies[0].xPosition, assortedGameArrays.enemies[0].yPosition);
-    }
-}
-
-//
