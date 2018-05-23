@@ -19,8 +19,8 @@ font-family: 'Bungee Inline', cursive; */
     background-repeat: no-repeat;
     background-size: cover;
     height:400px;
-    /* opacity: .1;
-    filter: alpha(opacity=50); */
+    opacity: .9;
+    filter: alpha(opacity=50);
 }
 
 #outer-hero {
@@ -48,8 +48,8 @@ font-family: 'Bungee Inline', cursive; */
 
 main img{
     float:left;
-    opacity: .1;
-    filter: alpha(opacity=50);
+    /* opacity: .1;
+    filter: alpha(opacity=50); */
     
 }
 
@@ -60,9 +60,9 @@ main img{
     padding-right:30px;
     text-align: left;
     margin-top:25px;
-    overflow:scroll;
+    /* overflow:scroll; */
     height:270px;
-font-family: 'Saira Condensed', sans-serif;
+    font-family: 'Saira Condensed', sans-serif;
     
 }
 
@@ -74,6 +74,29 @@ font-family: 'Saira Condensed', sans-serif;
     font-size: 20px;
     margin-left:380px;
     font-family: 'Saira Condensed', sans-serif;
-
-
+    /* border: solid purple 1px; */
 }
+
+
+/* via https://www.w3schools.com/howto/howto_js_slideshow.asp */
+
+/* Slideshow container */
+.slideshow-container {
+    max-width: 300px;
+    /* position: relative; */
+    float: left;
+    margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+    display: none;
+}
+
+/* Fading animation */
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
