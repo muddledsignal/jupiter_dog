@@ -21,6 +21,7 @@ var globalVariables = {
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 30,
+    motionDelay: 50,
 }
 
 //  =====================    Object Literal for Player    ======================
@@ -311,7 +312,7 @@ function allEnemiesFireAtWill() {
 
   //  This too should be inside the initialize Game function.   
 
-document.getElementById('body-listener').addEventListener('click', mouseWasClicked);
+document.getElementById('table-div').addEventListener('click', mouseWasClicked);
 
 function mouseWasClicked(event){
 
@@ -399,6 +400,19 @@ function drawBullet(xPosition, yPosition) {
 
 //  ==========  End section on rendering to page
 
+//  =============  handle player death  ============
+function playerDied(){
+
+    var scoreObject = {
+        score: player.score,
+    }
+
+    localStorage.setItem('score', JSON.stringify(scoreObject));
+
+    //  Go to high scores page
+    window.location.href = "score.html"
+}
+
 //  ==========   This section is nothing but functions that run other functions.   
 
 
@@ -468,10 +482,8 @@ function inGame() {
     everythingShoots();
 
     //  Is the Player dead?
-    if (player.dead) {
-        console.log('damn');
-        player.dead=false;
-    }
+    if (player.dead) 
+    {playerDied()}
 
     spawnEnemies();
     player.gunCooldownTimer--
@@ -479,10 +491,10 @@ function inGame() {
 
 function worstSolutionEver() {
     inGame();
-    setTimeout(worstSolutionEver2, 50);
+    setTimeout(worstSolutionEver2, globalVariables.motionDelay);
 }
 
 function worstSolutionEver2(){
     inGame();
-    setTimeout(worstSolutionEver,50);
+    setTimeout(worstSolutionEver, globalVariables.motionDelay);
 }
