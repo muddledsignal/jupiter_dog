@@ -5,7 +5,7 @@ nav{
 }
 
 main{
-    margin:30px 0px 0px 0px;
+    margin:50px 0px 0px 0px;
     /* border:dashed black 2px; */
     position: absolute;
 
@@ -15,18 +15,16 @@ aside{
     /* float: left; */
     width:21%;
 }
+
 h2{
-    
     font-weight: bolder;
     height:25px;
     font-size: 20px;
     font-family:'Arial, Helvetica', sans-serif; 
     /* border:dashed black 2px; */
-    padding:10px;
-
-
-
+    padding-left:10px;
 }
+
 #instructions p{
     border: solid #ddd 4px;
     overflow:scroll;
@@ -45,6 +43,49 @@ canvas {
                 width:700px;
                 background: transparent;
                 border: solid #ddd 4px;
+                border-radius: 4px;
                 height: 418px;
                 margin-left:250px;
+}
+
+h3{
+    font-weight: bolder;
+    height:25px;
+    font-size: 20px;
+    font-family:'Arial, Helvetica', sans-serif; 
+    /* border:dashed black 2px; */
+    padding-left:10px;
+}
+
+#table-div {
+    /* border: solid orange 1px; */
+    margin-top: 40px;
+}
+
+table {
+    padding: 30px;
+    /* border: solid orange 1px; */
+    display: flex;
+    justify-content: space-around;
+}
+
+th {
+    /* border: solid orange 1px; */
+    /* padding-right: 20px; */
+}
+
+th img {
+    border-radius: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+td {
+    /* border: solid orange 1px; */
+    text-align: center;
+    /* padding-right: 20px; */
+}
+
+th, td {
+    padding: 10px 50px 0px 50px;
 }
