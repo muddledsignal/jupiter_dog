@@ -36,6 +36,7 @@ var player = {
     movementDirection: 0,
     tryingToShootGun: false,
     velocity: 20,
+    name
 };
 
 player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
@@ -306,9 +307,29 @@ function allEnemiesFireAtWill() {
 
 
 //  ==========================   Event Listeners & Event Handlers  =========================
-document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);  //  Should be inside the not-yet-existant initialize Game function
+  //  Should be inside the not-yet-existant initialize Game function
 
-document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);  //  This too should be inside the initialize Game function.   
+  //  This too should be inside the initialize Game function.   
+
+document.getElementById('body-listener').addEventListener('click', mouseWasClicked);
+
+function mouseWasClicked(event){
+
+    if (event.target.id === 'sarah' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
+        
+        //Player Name is what was clicked on
+        player.name = event.target.id;
+
+        //Add event listeners for key presses.
+        document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);
+
+        //start the game
+        worstSolutionEver();
+    }
+    else{
+        alert('Click on a Character you dummy!')
+    }
+}
 
 function keyPressedEvent(event) {
 
@@ -354,6 +375,7 @@ function createCanvas() {
 }
 
 function drawPlayer() {
+
     globalVariables.ctx.fillStyle = 'green';
     globalVariables.ctx.fillRect(player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius, 2 * player.radius);
 
@@ -463,11 +485,4 @@ function worstSolutionEver() {
 function worstSolutionEver2(){
     inGame();
     setTimeout(worstSolutionEver,50);
-}
-
-
-function testing() {
-    for (var i = 0; i < 500; i++) {
-        inGame();
-    }
 }
