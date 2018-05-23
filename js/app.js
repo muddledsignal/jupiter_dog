@@ -114,7 +114,7 @@ function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
 
     //If player is moving off the page, move him back
-    if (player.xPosition < 5 || player.xPosition > maxCanvasX-5){
+    if (player.xPosition < 5 || player.xPosition > globalVariables.globamaxCanvasX-5){
         player.xPosition -= player.velocity * player.movementDirection;
     }
 }
@@ -320,8 +320,9 @@ function allEnemiesFireAtWill() {
 document.getElementById('table-div').addEventListener('click', mouseWasClicked);
 
 function mouseWasClicked(event){
+    debugger
 
-    if (event.target.id === 'sarah' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
+    if (event.target.id === 'sara' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
         
         //Player Name is what was clicked on
         player.name = event.target.id;
@@ -382,8 +383,8 @@ function createCanvas() {
 
 function drawPlayer() {
 
-    globalVariables.ctx.fillStyle = 'green';
-    globalVariables.ctx.fillRect(player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius, 2 * player.radius);
+    // globalVariables.ctx.fillStyle = 'green';
+    // globalVariables.ctx.fillRect(player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius, 2 * player.radius);
 
 }
 
