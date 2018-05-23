@@ -1,0 +1,79 @@
+/* 
+font-family: 'Orbitron', sans-serif;
+font-family: 'VT323', monospace;
+font-family: 'Press Start 2P', cursive;
+font-family: 'Gugi', cursive;
+font-family: 'Do Hyeon', sans-serif;
+font-family: 'Saira Condensed', sans-serif;
+font-family: 'Homenaje', sans-serif;
+font-family: 'Bungee Inline', cursive; */
+
+/* nav{
+
+} */
+
+#space-gif {
+    width: 960px;
+    background-image: url(../img/galaxybackground.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:400px;
+    /* opacity: .1;
+    filter: alpha(opacity=50); */
+}
+
+#outer-hero {
+    position:relative;
+    
+}
+
+ #outer-hero h1 {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    color:white;
+    text-align: center;
+    font-stretch: condensed;
+    font-family: 'Do Hyeon', sans-serif;
+
+} 
+
+ main{
+    margin-top:450px;
+    height:300px;
+} 
+
+main img{
+    float:left;
+    opacity: .1;
+    filter: alpha(opacity=50);
+    
+}
+
+
+#description{
+    width: 550px; 
+    float:right;
+    padding-right:30px;
+    text-align: left;
+    margin-top:25px;
+    overflow:scroll;
+    height:270px;
+font-family: 'Saira Condensed', sans-serif;
+    
+}
+
+#concept{
+    position: absolute;
+    background-color: white;
+    font-weight: bolder;
+    height:25px;
+    font-size: 20px;
+    margin-left:380px;
+    font-family: 'Saira Condensed', sans-serif;
+
+
+}

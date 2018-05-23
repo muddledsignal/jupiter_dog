@@ -1,0 +1,50 @@
+
+nav{
+    border-bottom:solid black 2px;
+
+}
+
+main{
+    margin:30px 0px 0px 0px;
+    /* border:dashed black 2px; */
+    position: absolute;
+
+} 
+aside{ 
+    height:230px;
+    /* float: left; */
+    width:21%;
+}
+h2{
+    
+    font-weight: bolder;
+    height:25px;
+    font-size: 20px;
+    font-family:'Arial, Helvetica', sans-serif; 
+    /* border:dashed black 2px; */
+    padding:10px;
+
+
+
+}
+#instructions p{
+    border: solid #ddd 4px;
+    overflow:scroll;
+    height:400px;
+    border-radius: 4px;
+    font-family:'Arial, Helvetica', sans-serif; 
+}
+p{
+   padding:10px;
+}
+
+canvas {
+                /* position: relative; */
+                margin-top: 75px;
+                /* left: 230px; */
+                width:700px;
+                background: transparent;
+                border: solid #ddd 4px;
+                height: 418px;
+                margin-left:250px;
+}
