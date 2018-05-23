@@ -1,0 +1,13 @@
+
+#score{
+    margin-top:100px;
+    border:solid red 2px;
+}
+th, td{
+    border:dashed rgb(59, 31, 161) 2px;
+    padding:5px;
+}
+#newscore {
+    border:solid red 2px;
+    width:300px;
+}

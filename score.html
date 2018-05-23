@@ -8,37 +8,54 @@
 
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/score.css">
 
 
 
-    <title>Document</title>
+    <title>Scoreboard</title>
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="/score.html">score</a>
-            </li>
-            <li>
-                <a href="/about.html">about</a>
-            </li>
-            <li>
-                <a href="/game.html">game</a>
-            </li>
-            <li>
-                <a href="/index.html">home</a>
-            </li>
-        </ul>
-    </nav>
+        <header>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="/score.html">score</a>
+                        </li>
+                        <li>
+                            <a href="/about.html">about</a>
+                        </li>
+                        <li>
+                            <a href="/game.html">game</a>
+                        </li>
+                        <li>
+                            <a href="/index.html">home</a>
+                        </li>
+                    </ul>
+                    <img id="logo" src="img/001-animals.png">
+                </nav>
+                <!-- <div id="outer-hero">
+                    <div id="space-gif"></div>
+                    <h1>Jupiter Dog</h1>
+                </div> -->
+            </header>
 
-
-    <h1>this is the score page</h1>
-
+    <!-- <h1>this is the score page</h1> -->
+<main>
     <table id="score">
     </table>
 
-
+    <form id="newscore">
+        <fieldset>
+            <legend>Submit your score</legend>
+            <label>Name:
+                <input type="text" name="name" />
+            </label>
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+</main>
+<footer></footer>
     <script type="text/javascript" src="js/score.js"></script>
 </body>
 
