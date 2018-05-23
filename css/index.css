@@ -19,7 +19,8 @@ font-family: 'Bungee Inline', cursive; */
     background-repeat: no-repeat;
     background-size: cover;
     height:400px;
-    
+    /* opacity: .1;
+    filter: alpha(opacity=50); */
 }
 
 #outer-hero {
@@ -47,6 +48,9 @@ font-family: 'Bungee Inline', cursive; */
 
 main img{
     float:left;
+    opacity: .1;
+    filter: alpha(opacity=50);
+    
 }
 
 
