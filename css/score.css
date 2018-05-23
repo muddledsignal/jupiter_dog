@@ -4,7 +4,10 @@
     border:solid red 2px;
 }
 th, td{
-    border:dashed red 2px;
+    border:dashed rgb(59, 31, 161) 2px;
     padding:5px;
-
+}
+#newscore {
+    border:solid red 2px;
+    width:300px;
 }
