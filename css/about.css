@@ -1,0 +1,82 @@
+
+
+
+#network-header {
+    width: 100%;
+    background-image: url(../img/network.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:400px;
+    /* opacity: .9; */
+    filter: alpha(opacity=50);
+}
+
+/*  */
+
+#outer-hero {
+    position:relative;
+    
+}
+
+ #outer-hero h1 {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    color:white;
+    text-align: center;
+    font-stretch: condensed;
+    font-family: 'Do Hyeon', sans-serif;
+
+} 
+
+
+body {
+    width: 960px;
+    margin: 0px auto;
+    background-color: white;
+    /* background-color: #20201f; */
+}
+
+ main{
+    margin-top:450px;
+    height:1500px;
+} 
+
+main img {
+    float:left;
+
+    
+}
+
+/* this is just the "about us" */
+#concept{ 
+    /* position: absolute; */
+    background-color: white;
+    font-weight: bolder;
+    height:25px;
+    font-size: 30px;
+    margin-left:380px;
+    font-family: 'Saira Condensed', sans-serif;
+    
+}
+
+#description * {
+
+    /* float: left; */
+    padding-right:30px;
+    text-align: left;
+    margin-top:25px;
+    /* overflow:scroll; */
+    /* height:270px; */
+    font-family: 'Saira Condensed', sans-serif;
+    
+}
+
+.class {
+    float: left;
+}
+
+
