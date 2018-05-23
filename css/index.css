@@ -13,21 +13,17 @@ font-family: 'Bungee Inline', cursive; */
 } */
 
 #space-gif {
-    /* position: relative; */
     width: 960px;
     background-image: url(../img/galaxybackground.gif);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* border: dashed green 3px; */
     height:400px;
     
 }
 
 #outer-hero {
     position:relative;
-    /* height:230px; */
-    /* border: solid yellow 3px; */
     
 }
 
@@ -45,10 +41,7 @@ font-family: 'Bungee Inline', cursive; */
 } 
 
  main{
-     margin-top:450px;
-     /* position:relative; */
-    /* margin:30px 50px 0px 20px; */
-    /* border: dashed green 3px; */
+    margin-top:450px;
     height:300px;
 } 
 
@@ -56,36 +49,17 @@ main img{
     float:left;
 }
 
-/* aside{
-
-    height:230px;
-
-    float: left;
-    width:25%;
-    
-} */
-
-/* #instructions p{
-    border: solid #ddd 4px;
-    margin-top: 30px;
-    overflow:scroll;
-    height:300px;
-    padding:10px;
-    border-radius: 4px;
-    font-family:'Arial, Helvetica', sans-serif; 
-} */
-
 
 #description{
-    /* position:relative; */
     width: 550px; 
-    /* border: dashed red 2px; */
     float:right;
     padding-right:30px;
     text-align: left;
     margin-top:25px;
     overflow:scroll;
     height:270px;
+font-family: 'Saira Condensed', sans-serif;
+    
 }
 
 #concept{
@@ -95,9 +69,7 @@ main img{
     height:25px;
     font-size: 20px;
     margin-left:380px;
-    /* margin-left:400px; */
-    /* font-family:'Arial, Helvetica', sans-serif;  */
-    /* padding-left: 100px; */
-    /* border: dashed green 3px; */
+    font-family: 'Saira Condensed', sans-serif;
+
 
 }
