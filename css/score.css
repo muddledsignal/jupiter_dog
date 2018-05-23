@@ -1,0 +1,10 @@
+
+#score{
+    margin-top:100px;
+    border:solid red 2px;
+}
+th, td{
+    border:dashed red 2px;
+    padding:5px;
+
+}

@@ -29,6 +29,7 @@ header {
 
 nav {
     /* border: dashed red 2px; */
+    border-bottom:solid black 2px;
 }
 
 nav ul{
