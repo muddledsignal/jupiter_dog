@@ -42,7 +42,7 @@ body {
 
  main{
     margin-top:450px;
-    height:1500px;
+    height:1100px;
 } 
 
 main img {
@@ -67,6 +67,7 @@ main img {
 
     /* float: left; */
     padding-right:30px;
+    padding-top: 0px;
     text-align: left;
     margin-top:25px;
     /* overflow:scroll; */
@@ -79,4 +80,6 @@ main img {
     float: left;
 }
 
-
+td {
+    vertical-align: middle;
+}
