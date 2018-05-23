@@ -27,30 +27,28 @@ var globalVariables = {
 //  =====================    Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
-    image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
+    image: 'PlayerImageFileFilepath', 
     gunCooldownTimer: 0,
     gunCooldownTimerResetsTo: 28,
     score: 0,
-    radius: 30,
+    radius: 40,
     score: 0,
     dead: false,
     movementDirection: 0,
     tryingToShootGun: false,
     velocity: 20,
-    name
 };
 
 player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
 
 //    ========     Constructor Functions for Enemy, Enemy Bullets, and Player Bullets   =======
-function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, image, type) {
+function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterpoint, type) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
     this.xVelocity = 0;
     this.yVelocity = yVelocityInitial;
     this.xCenterpoint = xCenterpoint;
     this.yCenterpoint = yCenterpoint;
-    this.image = image;
     this.type = type;
     this.dead = false;
     this.gunCooldownTimer = 0
@@ -114,7 +112,7 @@ function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
 
     //If player is moving off the page, move him back
-    if (player.xPosition < 5 || player.xPosition > maxCanvasX-5){
+    if (player.xPosition < 5 || player.xPosition > globalVariables.globamaxCanvasX-5){
         player.xPosition -= player.velocity * player.movementDirection;
     }
 }
@@ -270,27 +268,25 @@ function spawnEnemies() {
     globalVariables.timeTillNicholasSpawns--;
     globalVariables.timeTillKokoSpawns--;
     globalVariables.timeTillSamSpawns--;
-    var no = newEnemyParameters();
-
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns < 1) {
-
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas Filepath', 'Nicholas', )
+        var no = newEnemyParameters();
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas', )
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
         globalVariables.nicholasTimerResetValue--;
     }
 
     if (globalVariables.timeTillKokoSpawns < 1) {
-
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko Filepath', 'Koko', )
+        var no = newEnemyParameters();
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint,  'Koko', )
         globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
         globalVariables.kokoTimerResetValue--;
     }
 
     if (globalVariables.timeTillSamSpawns < 1) {
-
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam Filepath', 'Sam', )
+        var no = newEnemyParameters();
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam', )
         globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
         globalVariables.samTimerResetValue--;
     }
@@ -321,10 +317,10 @@ document.getElementById('table-div').addEventListener('click', mouseWasClicked);
 
 function mouseWasClicked(event){
 
-    if (event.target.id === 'sarah' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
+    if (event.target.id === 'sara' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
         
         //Player Name is what was clicked on
-        player.name = event.target.id;
+        player.image = event.target.id;
 
         //Add event listeners for key presses.
         document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);
@@ -381,21 +377,20 @@ function createCanvas() {
 }
 
 function drawPlayer() {
-
-    globalVariables.ctx.fillStyle = 'green';
-    globalVariables.ctx.fillRect(player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius, 2 * player.radius);
+    
+    var image = document.getElementById(player.image)
+    globalVariables.ctx.drawImage(image, player.xPosition-player.radius, player.yPosition-player.radius, 2*player.radius+4, 2*player.radius+4);
 
 }
 
-function drawEnemy(xPosition, yPosition) {
-    globalVariables.ctx.fillStyle = 'red';
-    globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
+function drawEnemy(currentEnemy) {
+    // globalVariables.ctx.fillStyle = 'red';
+    // globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
 
-    /*     globalVariables.ctx.fillStyle = 'red';
-    var enemyRadius = globalVariables.enemyRadius;
-    globalVariables.ctx.arc(xPosition, yPosition, enemyRadius, 0, 2 * Math.PI);
-    globalVariables.ctx.fill(); */
-    //  Changed to drawing squares because the fill was god-awful. when objects move
+    var image = document.getElementById(currentEnemy.type);
+
+    globalVariables.ctx.drawImage(image, currentEnemy.xPosition-globalVariables.enemyRadius, currentEnemy.yPosition-globalVariables.enemyRadius, 2*globalVariables.enemyRadius+4, 2*globalVariables.enemyRadius+4);
+    debugger
 }
 
 function drawBullet(xPosition, yPosition) {
@@ -448,7 +443,7 @@ function drawEverything() {
     // this for loop draws all of our enemies
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
-        drawEnemy(currentEnemy.xPosition, currentEnemy.yPosition);
+        drawEnemy(currentEnemy);
     }
     // this for loop draws all of our bullets
     for (var i in assortedGameArrays.playerBullets) {
