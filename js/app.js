@@ -112,6 +112,11 @@ function moveAllEnemyBullets() {
 
 function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
+
+    //If player is moving off the page, move him back
+    if (player.xPosition < 5 || player.xPosition > maxCanvasX-5){
+        player.xPosition -= player.velocity * player.movementDirection;
+    }
 }
 
 function moveAllPlayerBullets() {
@@ -328,7 +333,7 @@ function mouseWasClicked(event){
         worstSolutionEver();
     }
     else{
-        alert('Click on a Character you dummy!')
+        alert('Click on a character you dummy!')
     }
 }
 
