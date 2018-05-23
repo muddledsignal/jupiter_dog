@@ -1,0 +1,41 @@
+main{
+    margin:30px 50px 0px 20px;
+} 
+aside{ 
+    height:230px;
+    float: left;
+    width:25%;
+}
+h2{
+    position: absolute;
+    background-color: white;
+    font-weight: bolder;
+    height:25px;
+    font-size: 20px;
+    font-family:'Arial, Helvetica', sans-serif; 
+    padding-left: 10px;
+
+}
+#instructions p{
+    border: solid #ddd 4px;
+    margin-top: 30px;
+    overflow:scroll;
+    height:300px;
+    padding:10px;
+    border-radius: 4px;
+    font-family:'Arial, Helvetica', sans-serif; 
+}
+
+
+
+
+
+canvas {
+                position: relative;
+                margin-top: 2%;
+                left: 5%;
+                width:830px;
+                background: transparent;
+                border: solid #ddd 4px;
+                height: 325px;
+}
