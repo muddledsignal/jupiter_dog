@@ -21,6 +21,7 @@ var globalVariables = {
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 30,
+    motionDelay: 50,
 }
 
 //  =====================    Object Literal for Player    ======================
@@ -36,6 +37,7 @@ var player = {
     movementDirection: 0,
     tryingToShootGun: false,
     velocity: 20,
+    name
 };
 
 player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
@@ -110,6 +112,11 @@ function moveAllEnemyBullets() {
 
 function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
+
+    //If player is moving off the page, move him back
+    if (player.xPosition < 5 || player.xPosition > maxCanvasX-5){
+        player.xPosition -= player.velocity * player.movementDirection;
+    }
 }
 
 function moveAllPlayerBullets() {
@@ -306,9 +313,29 @@ function allEnemiesFireAtWill() {
 
 
 //  ==========================   Event Listeners & Event Handlers  =========================
-document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);  //  Should be inside the not-yet-existant initialize Game function
+  //  Should be inside the not-yet-existant initialize Game function
 
-document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);  //  This too should be inside the initialize Game function.   
+  //  This too should be inside the initialize Game function.   
+
+document.getElementById('table-div').addEventListener('click', mouseWasClicked);
+
+function mouseWasClicked(event){
+
+    if (event.target.id === 'sarah' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
+        
+        //Player Name is what was clicked on
+        player.name = event.target.id;
+
+        //Add event listeners for key presses.
+        document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);
+
+        //start the game
+        worstSolutionEver();
+    }
+    else{
+        alert('Click on a character you dummy!')
+    }
+}
 
 function keyPressedEvent(event) {
 
@@ -354,6 +381,7 @@ function createCanvas() {
 }
 
 function drawPlayer() {
+
     globalVariables.ctx.fillStyle = 'green';
     globalVariables.ctx.fillRect(player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius, 2 * player.radius);
 
@@ -376,6 +404,19 @@ function drawBullet(xPosition, yPosition) {
 }
 
 //  ==========  End section on rendering to page
+
+//  =============  handle player death  ============
+function playerDied(){
+
+    var scoreObject = {
+        score: player.score,
+    }
+
+    localStorage.setItem('score', JSON.stringify(scoreObject));
+
+    //  Go to high scores page
+    window.location.href = "score.html"
+}
 
 //  ==========   This section is nothing but functions that run other functions.   
 
@@ -446,10 +487,8 @@ function inGame() {
     everythingShoots();
 
     //  Is the Player dead?
-    if (player.dead) {
-        console.log('damn');
-        player.dead=false;
-    }
+    if (player.dead) 
+    {playerDied()}
 
     spawnEnemies();
     player.gunCooldownTimer--
@@ -457,17 +496,10 @@ function inGame() {
 
 function worstSolutionEver() {
     inGame();
-    setTimeout(worstSolutionEver2, 50);
+    setTimeout(worstSolutionEver2, globalVariables.motionDelay);
 }
 
 function worstSolutionEver2(){
     inGame();
-    setTimeout(worstSolutionEver,50);
-}
-
-
-function testing() {
-    for (var i = 0; i < 500; i++) {
-        inGame();
-    }
+    setTimeout(worstSolutionEver, globalVariables.motionDelay);
 }
