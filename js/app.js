@@ -15,9 +15,9 @@ var globalVariables = {
     timeTillNicholasSpawns: 1,
     timeTillKokoSpawns: 1,
     timeTillSamSpawns: 1,
-    nicholasTimerResetValue: 300,
-    kokoTimerResetValue: 500,
-    samTimerResetVAlue: 2000,
+    nicholasTimerResetValue: 100,
+    kokoTimerResetValue: 300,
+    samTimerResetVAlue: 600,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 30,
@@ -95,12 +95,12 @@ function moveAllEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
         //move object
-        currentEnemy.xPosition += 0.2*currentEnemy.xVelocity;
-        currentEnemy.yPosition += 0.2*currentEnemy.yVelocity;
+        currentEnemy.xPosition += 0.2 * currentEnemy.xVelocity;
+        currentEnemy.yPosition += 0.2 * currentEnemy.yVelocity;
 
         //calculate velocity at current position  (used next iteration to move objects)
-        currentEnemy.xVelocity += 0.1*(currentEnemy.xCenterpoint - currentEnemy.xPosition);
-        currentEnemy.yVelocity += 0.1*(currentEnemy.yCenterpoint - currentEnemy.yPosition);
+        currentEnemy.xVelocity += 0.1 * (currentEnemy.xCenterpoint - currentEnemy.xPosition);
+        currentEnemy.yVelocity += 0.1 * (currentEnemy.yCenterpoint - currentEnemy.yPosition);
     }
 }
 
@@ -233,14 +233,15 @@ function handleAllDeadEnemies() {
 
 //   Spawn enemy function determines if the countdown timer for enemy spawns is at 0.
 //  If so, it spawns an enemy, resets the timer, and decrements the reset value.
-function newEnemyParameters(){
+function newEnemyParameters() {
 
     var newEnemyObject = {
-    xPosInitial: Math.random()*(globalVariables.maxCanvasX-300)+150,
-    xCenterpoint: Math.random()*(globalVariables.maxCanvasX-800)+400,
-    yPosInitial: Math.random()*(globalVariables.maxCanvasY-300)+150,
-    yCenterpoint: Math.random()*(globalVariables.maxCanvasY-400)+200,
-    yVelocityInitial: Math.random()*15,};
+        xPosInitial: Math.random() * (globalVariables.maxCanvasX - 300) + 150,
+        xCenterpoint: Math.random() * (globalVariables.maxCanvasX - 800) + 400,
+        yPosInitial: Math.random() * (globalVariables.maxCanvasY - 300) + 150,
+        yCenterpoint: Math.random() * (globalVariables.maxCanvasY - 400) + 200,
+        yVelocityInitial: Math.random() * 15,
+    };
 
     return newEnemyObject;
 }
@@ -253,21 +254,21 @@ function spawnEnemies() {
 
 
     //  Check to see if any enemies should spawn:
-    if (globalVariables.timeTillNicholasSpawns = 0) {
+    if (globalVariables.timeTillNicholasSpawns < 1) {
 
         new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas Filepath', 'Nicholas', )
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
         globalVariables.nicholasTimerResetValue--;
-    // }
+    }
 
-    if (globalVariables.timeTillKokoSpawns = 0) {
+    if (globalVariables.timeTillKokoSpawns < 1) {
 
         new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko Filepath', 'Koko', )
         globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
         globalVariables.kokoTimerResetValue--;
     }
 
-    if (globalVariables.timeTillSamSpawns = 0) {
+    if (globalVariables.timeTillSamSpawns < 1) {
 
         new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam Filepath', 'Sam', )
         globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
@@ -404,7 +405,7 @@ function drawEverything() {
     }
 }
 
-function everythingShoots(){
+function everythingShoots() {
     if (player.shootsgun) {
         playershootsgun();
     }
@@ -413,9 +414,6 @@ function everythingShoots(){
 }
 
 //  =========   End of functions that run other functions section.
-
-
-new Enemy(100, 500, 300, -100, 280, 20, 'no-image', 'nicholas');
 
 
 //  ===   draft of infinite while loop.  Put inside a function instead of while loop to keep it from actually running.
@@ -429,10 +427,30 @@ function inGame() {
     handleAllDeadEnemies();
 
     everythingShoots();
-    
+
     //  Is the Player dead?
     if (player.dead) {
         console.log('damn');
+        player.dead=false;
     }
-   
+
+    spawnEnemies();
+
+}
+
+function worstSolutionEver() {
+    inGame();
+    setTimeout(worstSolutionEver2, 50);
+}
+
+function worstSolutionEver2(){
+    inGame();
+    setTimeout(worstSolutionEver,50);
+}
+
+
+function testing() {
+    for (var i = 0; i < 500; i++) {
+        inGame();
+    }
 }
