@@ -8,15 +8,15 @@ var assortedGameArrays = {
 }
 
 var globalVariables = {
-    enemyBulletSpeed: 5,
+    bulletSpeed: 5,
     maxCanvasX: 1200,
     maxCanvasY: 600,
     explosionDurationCount: 60,
-    timeTillNicholasSpawns: 1,
-    timeTillKokoSpawns: 1,
-    timeTillSamSpawns: 1,
-    nicholasTimerResetValue: 100,
-    kokoTimerResetValue: 300,
+    timeTillNicholasSpawns: 3,
+    timeTillKokoSpawns: 3,
+    timeTillSamSpawns: 3,
+    nicholasTimerResetValue: 140,
+    kokoTimerResetValue: 80,
     samTimerResetVAlue: 600,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
@@ -28,16 +28,14 @@ var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
     image: 'PlayerImageFileFilepath', //  If player's image changes dynamically.
     gunCooldownTimer: 0,
-    gunCooldownTimerResetsTo: 20,
+    gunCooldownTimerResetsTo: 28,
     score: 0,
-    moveSpeed: 10,
     radius: 30,
-    bulletSpeed: 200, // apparently not being used
     score: 0,
     dead: false,
     movementDirection: 0,
-    shootsgun: false,
-    velocity: 50,
+    tryingToShootGun: false,
+    velocity: 20,
 };
 
 player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
@@ -70,7 +68,6 @@ function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterp
 function EnemyBullet(xPosInitial, yPosInital) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
-    this.yVelocity = globalVariables.enemyBulletSpeed;
     assortedGameArrays.enemyBullets.push(this);
 };
 
@@ -107,7 +104,7 @@ function moveAllEnemies() {
 function moveAllEnemyBullets() {
     for (var i in assortedGameArrays.enemyBullets) {
         var currentBullet = assortedGameArrays.enemyBullets[i];
-        currentBullet.yPosition += currentBullet.yVelocity;
+        currentBullet.yPosition += globalVariables.bulletSpeed;
     }
 }
 
@@ -118,7 +115,7 @@ function movePlayer() {
 function moveAllPlayerBullets() {
     for (var i in assortedGameArrays.playerBullets) {
         var currentBullet = assortedGameArrays.playerBullets[i];
-        currentBullet.yPosition--;
+        currentBullet.yPosition -= globalVariables.bulletSpeed;
     }
 }
 
@@ -178,7 +175,8 @@ function detectAllEnemieHitByBullets() {
 
             //See if total distance is < radius
             if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) < Math.pow(radius, 2)) {
-                assortedGameArrays.enemies[i].dead = true;
+                assortedGameArrays.enemies[i].dead = true;  
+                assortedGameArrays.playerBullets.splice(j, 1);
             }
         }
     }
@@ -220,13 +218,28 @@ function checkNRemoveExplosions() {
 
 //  =======  End of section dedicated to page cleanup   ==================================
 
+function playerScorePlusPlus(deadEnemyType){
+    if (deadEnemyType === 'Nicholas') {
+        player.score += 200;
+    }
+
+    if (deadEnemyType === 'Koko') {
+        player.score += 50;
+    }
+    
+    if (deadEnemyType === 'Sam') {
+        player.score += 5000;
+    }
+}
+
 //  ===========    Function to handle Enemies Dying  ========================
 function handleAllDeadEnemies() {
     for (var i = assortedGameArrays.enemies.length - 1; i > -1; i--) {
         var currentEnemy = assortedGameArrays.enemies[i];
         if (currentEnemy.dead) {
             // new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
-            assortedGameArrays.enemies.splice(i, 1);
+            var deadEnemy = assortedGameArrays.enemies.splice(i, 1);
+            playerScorePlusPlus(deadEnemy[0].type);
         }
     }
 }
@@ -306,21 +319,25 @@ function keyPressedEvent(event) {
         player.movementDirection = 1
     }
     else if (event.key === ' ') {
-        player.shootsgun = true
+        event.preventDefault();
+        player.tryingToShootGun = true;
     }
 
 }
 
 function keyDepressedEvent(event) {
     if (event.key === 'a' || event.key === 'd') {
-        player.movementDirection = 0
+        player.movementDirection = 0;
+    }
+
+    else if (event.key === ' '){
+        player.tryingToShootGun = false;
     }
 }
 
-//  Player Shoots gun function is called when player.shootsgun is true.   It checks to see if the player can
+//  Player Shoots gun function is called when player.tryingToShootGun is true.   It checks to see if the player can
 //  Shoot his gun.  If he can, he shoots.  Otherwise he doesn't
 function playershootsgun() {
-    player.shootsgun = false
 
     if (player.gunCooldownTimer < 1) {
         new PlayerBullet();
@@ -406,7 +423,7 @@ function drawEverything() {
 }
 
 function everythingShoots() {
-    if (player.shootsgun) {
+    if (player.tryingToShootGun) {
         playershootsgun();
     }
 
@@ -435,7 +452,7 @@ function inGame() {
     }
 
     spawnEnemies();
-
+    player.gunCooldownTimer--
 }
 
 function worstSolutionEver() {
