@@ -38,6 +38,7 @@ var player = {
     movementDirection: 0,
     tryingToShootGun: false,
     velocity: 20,
+    immortal: false,
 };
 
 player.yPosition = globalVariables.maxCanvasY - (5 + player.radius); //320
@@ -400,6 +401,12 @@ function keyPressedEvent(event) {
         event.preventDefault();
         player.tryingToShootGun = true;
     }
+    else if (event.key === 'p'  && player.immortal === false){
+        player.immortal = true;
+    }
+    else if (event.key === 'p'  && player.immortal === true){
+        player.immortal = false;
+    }
 
 }
 
@@ -542,7 +549,7 @@ function inGame() {
 
     everythingShoots();
 
-    // if (player.dead) { playerDied() }
+    if (player.dead === true && player.immortal === false ) { playerDied() }
 
     spawnEnemies();
     player.gunCooldownTimer--

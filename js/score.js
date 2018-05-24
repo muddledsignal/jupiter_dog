@@ -57,14 +57,13 @@ function newHighScore(event) {
     event.preventDefault();
     player.name = event.target.name.value;
     document.getElementById('newscore').innerHTML = '';
-
     allPlayer.push(player);
 
     allPlayer.sort(compare);
     score.innerHTML = '';
     fillTable();
-
-    localStorage.setItem('highScores',JSON.stringify(allPlayer));
+    debugger
+    localStorage.setItem('highScores', JSON.stringify(allPlayer));
 }
 
 function compare(a, b) {
