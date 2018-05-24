@@ -92,10 +92,6 @@ function Demi(xPosition, yPosition) {
     
 }
 
-Demi.prototype.move = function () {
-    this.yPosition += 3
-}
-
 Demi.prototype.drawDemi = function () {
     var image = document.getElementById('demi')
     globalVariables.ctx.drawImage(image, this.xPosition, this.yPosition, 2 * player.radius, 2 * player.radius)
@@ -119,17 +115,16 @@ function moveAllEnemies() {
     }
 }
 
+function moveAllDemis(){
+    for (var i in assortedGameArrays.demis){
+        assortedGameArrays.demis[i].yPosition +=3;
+    }
+}
+
 function moveAllEnemyBullets() {
     for (var i in assortedGameArrays.enemyBullets) {
         var currentBullet = assortedGameArrays.enemyBullets[i];
         currentBullet.yPosition += globalVariables.bulletSpeed;
-    }
-}
-
-function moveAllDemis() {
-    for (var i in assortedGameArrays.demis) {
-        debugger
-        assortedGameArrays.demis[i].move;
     }
 }
 
@@ -461,7 +456,7 @@ function moveEverything() {
 
     moveAllEnemies();
 
-    moveAllDemis();
+    moveAllDemis(); 
 
     removeStrayBullets();
 
