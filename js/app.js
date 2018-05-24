@@ -89,6 +89,7 @@ function Demi(xPosition, yPosition) {
     this.xPosition = xPosition;
     this.yPosition = yPosition;
     assortedGameArrays.demis.push(this);
+    
 }
 
 Demi.prototype.move = function () {
