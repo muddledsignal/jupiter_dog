@@ -18,7 +18,7 @@ var globalVariables = {
     timeTillSamSpawns: 3,
     nicholasTimerResetValue: 140,
     kokoTimerResetValue: 80,
-    samTimerResetVAlue: 600,
+    samTimerResetVAlue: 200,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 35,
@@ -89,7 +89,7 @@ function Demi(xPosition, yPosition) {
     this.xPosition = xPosition;
     this.yPosition = yPosition;
     assortedGameArrays.demis.push(this);
-    
+
 }
 
 Demi.prototype.drawDemi = function () {
@@ -115,9 +115,9 @@ function moveAllEnemies() {
     }
 }
 
-function moveAllDemis(){
-    for (var i in assortedGameArrays.demis){
-        assortedGameArrays.demis[i].yPosition +=3;
+function moveAllDemis() {
+    for (var i in assortedGameArrays.demis) {
+        assortedGameArrays.demis[i].yPosition += 3;
     }
 }
 
@@ -184,6 +184,27 @@ function detectCollisionsBetweenPlayerAndAnyBullet() {
                 //Run function for when player gets hit by ball of death.
             }
         }
+    }
+}
+
+function detectCollisionsBetweenPlayerAndDemi() {
+    for (var i = assortedGameArrays.demis.length -1; i > -1; i--) {
+
+        var currentDemi = assortedGameArrays.demis[i];
+        // debugger
+
+        if ((currentDemi.yPosition > (player.yPosition - player.radius * 3))
+            &
+            (currentDemi.yPosition < (player.yPosition + player.radius * 3))) {
+
+            //  Is the x value between Player +/- Radius
+            if ((currentDemi.xPosition > (player.xPosition - player.radius * 3))
+                &
+                (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
+                assortedGameArrays.demis.splice(i, 1);
+            }
+        }
+
     }
 }
 
@@ -274,7 +295,7 @@ function handleAllDeadEnemies() {
         if (currentEnemy.dead) {
             // new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
             var deadEnemy = assortedGameArrays.enemies.splice(i, 1);
-            debugger
+            // debugger
             playerScorePlusPlus(deadEnemy[0].type);
             if (deadEnemy[0].type === 'Sam') {
                 new Demi(deadEnemy[0].xPosition, deadEnemy[0].yPosition);
@@ -415,7 +436,7 @@ function drawPlayer() {
     globalVariables.ctx.drawImage(image, player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius + 4, 2 * player.radius + 4);
 
 }
-
+                     
 function drawEnemy(currentEnemy) {
 
     var image = document.getElementById(currentEnemy.type);
@@ -437,7 +458,7 @@ function playerDied() {
         score: player.score,
     }
 
-    localStorage.setItem('score', JSON.stringify(scoreObject));
+    localStorage.setItem('score', JSON.stringify(player.score));
 
     //  Go to high scores page
     window.location.href = "score.html"
@@ -456,7 +477,7 @@ function moveEverything() {
 
     moveAllEnemies();
 
-    moveAllDemis(); 
+    moveAllDemis();
 
     removeStrayBullets();
 
@@ -469,6 +490,8 @@ function detectEverything() {
     detectCollisionsBetweenPlayerAndAllEnemies();
 
     detectCollisionsBetweenPlayerAndAnyBullet();
+
+    detectCollisionsBetweenPlayerAndDemi();
 }
 
 function drawEverything() {
@@ -519,7 +542,7 @@ function inGame() {
 
     everythingShoots();
 
-    if (player.dead) { playerDied() }
+    // if (player.dead) { playerDied() }
 
     spawnEnemies();
     player.gunCooldownTimer--
