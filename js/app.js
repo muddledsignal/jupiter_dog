@@ -29,7 +29,7 @@ var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
     image: 'PlayerImageFileFilepath', 
     gunCooldownTimer: 0,
-    gunCooldownTimerResetsTo: 28,
+    gunCooldownTimerResetsTo: 10,
     score: 0,
     radius: 40,
     score: 0,
@@ -112,7 +112,6 @@ function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
 
     //If player is moving off the page, move him back
-    debugger
     if (player.xPosition < 5 || player.xPosition > globalVariables.maxCanvasX -5){
         player.xPosition -= player.velocity * player.movementDirection;
     }
@@ -373,8 +372,8 @@ function playershootsgun() {
 
 //  Resets to a blank canvas.
 function createCanvas() {
-    globalVariables.ctx.fillStyle = 'white';
-    globalVariables.ctx.fillRect(0, 0, 1200, 600);
+    var image = document.getElementById('codefellows');
+    globalVariables.ctx.drawImage(image, 0, 0, globalVariables.maxCanvasX, globalVariables.maxCanvasY);
 }
 
 function drawPlayer() {
