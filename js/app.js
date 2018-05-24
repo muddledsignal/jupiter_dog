@@ -5,10 +5,11 @@ var assortedGameArrays = {
     enemyBullets: [],
     playerBullets: [],
     explosionLocations: [],
+    demis: [],
 }
 
 var globalVariables = {
-    bulletSpeed: 5,
+    bulletSpeed: 4,
     maxCanvasX: 1200,
     maxCanvasY: 600,
     explosionDurationCount: 60,
@@ -20,16 +21,16 @@ var globalVariables = {
     samTimerResetVAlue: 600,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
-    enemyRadius: 30,
+    enemyRadius: 35,
     motionDelay: 50,
 }
 
 //  =====================    Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
-    image: 'PlayerImageFileFilepath', 
+    image: 'PlayerImageFileFilepath',
     gunCooldownTimer: 0,
-    gunCooldownTimerResetsTo: 28,
+    gunCooldownTimerResetsTo: 10,
     score: 0,
     radius: 40,
     score: 0,
@@ -53,10 +54,10 @@ function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterp
     this.dead = false;
     this.gunCooldownTimer = 0
     if (type = 'Nicholas') {
-        this.gunCooldownTimerResetsTo = 20;
+        this.gunCooldownTimerResetsTo = 25;
     }
     else if (type = 'Koko') {
-        this.gunCooldownTimerResetsTo = 30;
+        this.gunCooldownTimerResetsTo = 35;
     }
     else if (type = 'Sam') {
         this.gunCooldownTimerResetsTo = 10;
@@ -84,6 +85,23 @@ function Explosion(xPosition, yPosition) {
     assortedGameArrays.explosionLocations.push(this);
 }
 
+function Demi(xPosition, yPosition) {
+    this.xPosition = xPosition;
+    this.yPosition = yPosition;
+    assortedGameArrays.demis.push(this);
+    
+}
+
+Demi.prototype.move = function () {
+    this.yPosition += 3
+}
+
+Demi.prototype.drawDemi = function () {
+    var image = document.getElementById('demi')
+    globalVariables.ctx.drawImage(image, this.xPosition, this.yPosition, 2 * player.radius, 2 * player.radius)
+}
+
+
 //  ========    End Constructor Functions Section      ========================================
 
 
@@ -92,8 +110,8 @@ function moveAllEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
         //move object
-        currentEnemy.xPosition += 0.2 * currentEnemy.xVelocity;
-        currentEnemy.yPosition += 0.2 * currentEnemy.yVelocity;
+        currentEnemy.xPosition += 0.23 * currentEnemy.xVelocity;
+        currentEnemy.yPosition += 0.13 * currentEnemy.yVelocity;
 
         //calculate velocity at current position  (used next iteration to move objects)
         currentEnemy.xVelocity += 0.1 * (currentEnemy.xCenterpoint - currentEnemy.xPosition);
@@ -108,11 +126,18 @@ function moveAllEnemyBullets() {
     }
 }
 
+function moveAllDemis() {
+    for (var i in assortedGameArrays.demis) {
+        debugger
+        assortedGameArrays.demis[i].move;
+    }
+}
+
 function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
 
     //If player is moving off the page, move him back
-    if (player.xPosition < 5 || player.xPosition > globalVariables.globamaxCanvasX-5){
+    if (player.xPosition < 5 || player.xPosition > globalVariables.maxCanvasX - 5) {
         player.xPosition -= player.velocity * player.movementDirection;
     }
 }
@@ -180,7 +205,7 @@ function detectAllEnemieHitByBullets() {
 
             //See if total distance is < radius
             if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) < Math.pow(radius, 2)) {
-                assortedGameArrays.enemies[i].dead = true;  
+                assortedGameArrays.enemies[i].dead = true;
                 assortedGameArrays.playerBullets.splice(j, 1);
             }
         }
@@ -200,14 +225,23 @@ function removeStrayBullets() {
             assortedGameArrays.playerBullets.splice(i, 1);
         }
     }
+}
 
-    //  For loop to remove all the enemy bullets that have gone off the bottom
-    for (var i = assortedGameArrays.enemyBullets.length - 1; i > -1; i--) {
-        if (assortedGameArrays.enemyBullets[i].yPosition > globalVariables.maxCanvasY) {
-            assortedGameArrays.enemyBullets.splice(i, 1);
+function removeStrayDemis() {
+    for (var i = assortedGameArrays.demis.length - 1; i > -1; i--) {
+        if (assortedGameArrays.demis[i] > globalVariables.maxCanvasY) {
+            assortedGameArrays.demis.splice(i, 1);
         }
     }
 }
+
+//  For loop to remove all the enemy bullets that have gone off the bottom
+for (var i = assortedGameArrays.enemyBullets.length - 1; i > -1; i--) {
+    if (assortedGameArrays.enemyBullets[i].yPosition > globalVariables.maxCanvasY) {
+        assortedGameArrays.enemyBullets.splice(i, 1);
+    }
+}
+
 
 //  This function is currently useless.   Eventually, it will remove explosions from the page
 //  that have been displayed for too long.   The fact that it's already written is proof that
@@ -223,7 +257,7 @@ function checkNRemoveExplosions() {
 
 //  =======  End of section dedicated to page cleanup   ==================================
 
-function playerScorePlusPlus(deadEnemyType){
+function playerScorePlusPlus(deadEnemyType) {
     if (deadEnemyType === 'Nicholas') {
         player.score += 200;
     }
@@ -231,9 +265,10 @@ function playerScorePlusPlus(deadEnemyType){
     if (deadEnemyType === 'Koko') {
         player.score += 50;
     }
-    
+
     if (deadEnemyType === 'Sam') {
         player.score += 5000;
+
     }
 }
 
@@ -244,7 +279,11 @@ function handleAllDeadEnemies() {
         if (currentEnemy.dead) {
             // new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
             var deadEnemy = assortedGameArrays.enemies.splice(i, 1);
+            debugger
             playerScorePlusPlus(deadEnemy[0].type);
+            if (deadEnemy[0].type === 'Sam') {
+                new Demi(deadEnemy[0].xPosition, deadEnemy[0].yPosition);
+            }
         }
     }
 }
@@ -254,11 +293,11 @@ function handleAllDeadEnemies() {
 function newEnemyParameters() {
 
     var newEnemyObject = {
-        xPosInitial: Math.random() * (globalVariables.maxCanvasX - 300) + 150,
+        xPosInitial: Math.random() * (globalVariables.maxCanvasX - 350) + 175,
         xCenterpoint: Math.random() * (globalVariables.maxCanvasX - 800) + 400,
         yPosInitial: Math.random() * (globalVariables.maxCanvasY - 300) + 150,
         yCenterpoint: Math.random() * (globalVariables.maxCanvasY - 400) + 200,
-        yVelocityInitial: Math.random() * 15,
+        yVelocityInitial: Math.random() * 30 - 15,
     };
 
     return newEnemyObject;
@@ -271,15 +310,15 @@ function spawnEnemies() {
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas', )
+        var parameters = newEnemyParameters();
+        new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
         globalVariables.nicholasTimerResetValue--;
     }
 
     if (globalVariables.timeTillKokoSpawns < 1) {
         var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint,  'Koko', )
+        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko', )
         globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
         globalVariables.kokoTimerResetValue--;
     }
@@ -309,26 +348,26 @@ function allEnemiesFireAtWill() {
 
 
 //  ==========================   Event Listeners & Event Handlers  =========================
-  //  Should be inside the not-yet-existant initialize Game function
+//  Should be inside the not-yet-existant initialize Game function
 
-  //  This too should be inside the initialize Game function.   
+//  This too should be inside the initialize Game function.   
 
 document.getElementById('table-div').addEventListener('click', mouseWasClicked);
 
-function mouseWasClicked(event){
+function mouseWasClicked(event) {
 
-    if (event.target.id === 'sara' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis'){
-        
+    if (event.target.id === 'sara' || event.target.id === 'suzanne' || event.target.id === 'paul' || event.target.id === 'travis') {
+
         //Player Name is what was clicked on
         player.image = event.target.id;
 
         //Add event listeners for key presses.
-        document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent);document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);
+        document.getElementById('body-listener').addEventListener('keyup', keyDepressedEvent); document.getElementById('body-listener').addEventListener('keydown', keyPressedEvent);
 
         //start the game
         worstSolutionEver();
     }
-    else{
+    else {
         alert('Click on a character you dummy!')
     }
 }
@@ -353,7 +392,7 @@ function keyDepressedEvent(event) {
         player.movementDirection = 0;
     }
 
-    else if (event.key === ' '){
+    else if (event.key === ' ') {
         player.tryingToShootGun = false;
     }
 }
@@ -372,25 +411,21 @@ function playershootsgun() {
 
 //  Resets to a blank canvas.
 function createCanvas() {
-    globalVariables.ctx.fillStyle = 'white';
-    globalVariables.ctx.fillRect(0, 0, 1200, 600);
+    var image = document.getElementById('codefellows');
+    globalVariables.ctx.drawImage(image, 0, 0, globalVariables.maxCanvasX, globalVariables.maxCanvasY);
 }
 
 function drawPlayer() {
-    
     var image = document.getElementById(player.image)
-    globalVariables.ctx.drawImage(image, player.xPosition-player.radius, player.yPosition-player.radius, 2*player.radius+4, 2*player.radius+4);
+    globalVariables.ctx.drawImage(image, player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius + 4, 2 * player.radius + 4);
 
 }
 
 function drawEnemy(currentEnemy) {
-    // globalVariables.ctx.fillStyle = 'red';
-    // globalVariables.ctx.fillRect(xPosition - player.radius, yPosition - player.radius, 2 * player.radius, 2 * player.radius);
 
     var image = document.getElementById(currentEnemy.type);
+    globalVariables.ctx.drawImage(image, currentEnemy.xPosition - globalVariables.enemyRadius, currentEnemy.yPosition - globalVariables.enemyRadius, 2 * globalVariables.enemyRadius + 4, 2 * globalVariables.enemyRadius + 4);
 
-    globalVariables.ctx.drawImage(image, currentEnemy.xPosition-globalVariables.enemyRadius, currentEnemy.yPosition-globalVariables.enemyRadius, 2*globalVariables.enemyRadius+4, 2*globalVariables.enemyRadius+4);
-    debugger
 }
 
 function drawBullet(xPosition, yPosition) {
@@ -401,7 +436,7 @@ function drawBullet(xPosition, yPosition) {
 //  ==========  End section on rendering to page
 
 //  =============  handle player death  ============
-function playerDied(){
+function playerDied() {
 
     var scoreObject = {
         score: player.score,
@@ -426,7 +461,11 @@ function moveEverything() {
 
     moveAllEnemies();
 
+    moveAllDemis();
+
     removeStrayBullets();
+
+    removeStrayDemis();
 }
 
 function detectEverything() {
@@ -456,6 +495,10 @@ function drawEverything() {
         var currentBullet = assortedGameArrays.enemyBullets[i];
         drawBullet(currentBullet.xPosition, currentBullet.yPosition);
     }
+
+    for (var i in assortedGameArrays.demis) {
+        assortedGameArrays.demis[i].drawDemi();
+    }
 }
 
 function everythingShoots() {
@@ -481,9 +524,7 @@ function inGame() {
 
     everythingShoots();
 
-    //  Is the Player dead?
-    if (player.dead) 
-    {playerDied()}
+    if (player.dead) { playerDied() }
 
     spawnEnemies();
     player.gunCooldownTimer--
@@ -494,7 +535,7 @@ function worstSolutionEver() {
     setTimeout(worstSolutionEver2, globalVariables.motionDelay);
 }
 
-function worstSolutionEver2(){
+function worstSolutionEver2() {
     inGame();
     setTimeout(worstSolutionEver, globalVariables.motionDelay);
 }
