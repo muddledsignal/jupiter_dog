@@ -3,6 +3,7 @@
 // object has name and scores (maybe times enemies got killed, bullets shot, etc)
 
 var allPlayer = [];
+var player = {};
 
 function createTable() {
     function BaseScore(name, score) {
@@ -52,3 +53,36 @@ function fillTable() {
 createTable();
 fillTable();
 //CREATE A FORM WITH EVENT LISTENER
+document.getElementById('newscore').addEventListener('submit', newHighScore);
+
+function newHighScore(event){
+    var playerName = event.target.name.value;
+    event.preventDefault();
+    player.name = event.target.name.value;
+    document.getElementById('newscore').innerHTML = '';
+    
+//Don't delete this
+allPlayer.push(player);
+
+allPlayer.sort(compare);
+score.innerHTML = '';
+createTable();
+fillTable();
+}
+
+function compare(a, b){
+    var comparison = 0;
+    if (a.score > b.score){
+        comparison = -1;
+    }
+    else if(b.score > a.score){
+        comparison = 1;
+    }
+return comparison;
+}
+
+function onPageLoad(){
+    if (localStorage.score){
+        player.score = JSON.parse(localStorage.getItem('score'));
+    }
+}
