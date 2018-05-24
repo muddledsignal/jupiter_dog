@@ -4,6 +4,8 @@
 
 var allPlayer = [];
 var player = {};
+//CREATE A FORM WITH EVENT LISTENER
+document.getElementById('newscore').addEventListener('submit', newHighScore);
 
 function createTable() {
     function BaseScore(name, score) {
@@ -25,15 +27,15 @@ function fillTable() {
     var th = document.createElement('th');
     var th2 = document.createElement('th');
 
-    
+
     th.textContent = 'Name';
     th2.textContent = 'Score';
     newTr.append(th);
     newTr.append(th2);
     cells.append(newTr);
-    
+
     for (var i = 0; i < 5; i++) {
-        
+
         var newTr = document.createElement('tr');
         var newTd = document.createElement('td');
         var newTd2 = document.createElement('td');
@@ -49,40 +51,43 @@ function fillTable() {
         cells.append(newTr);
     }
 }
-//Make sure to cal functions above
-createTable();
-fillTable();
-//CREATE A FORM WITH EVENT LISTENER
-document.getElementById('newscore').addEventListener('submit', newHighScore);
 
-function newHighScore(event){
+function newHighScore(event) {
     var playerName = event.target.name.value;
     event.preventDefault();
     player.name = event.target.name.value;
     document.getElementById('newscore').innerHTML = '';
-    
-//Don't delete this
-allPlayer.push(player);
 
-allPlayer.sort(compare);
-score.innerHTML = '';
-createTable();
-fillTable();
+    allPlayer.push(player);
+
+    allPlayer.sort(compare);
+    score.innerHTML = '';
+    fillTable();
+
+    localStorage.setItem('highScores',JSON.stringify(allPlayer));
 }
 
-function compare(a, b){
+function compare(a, b) {
     var comparison = 0;
-    if (a.score > b.score){
+    if (a.score > b.score) {
         comparison = -1;
     }
-    else if(b.score > a.score){
+    else if (b.score > a.score) {
         comparison = 1;
     }
-return comparison;
+    return comparison;
 }
 
-function onPageLoad(){
-    if (localStorage.score){
+function onPageLoad() {
+    if (localStorage.score) {
         player.score = JSON.parse(localStorage.getItem('score'));
     }
+    if (localStorage.highScores){
+        allPlayer = JSON.parse(localStorage.getItem('highScores'))
+    }
+    else {
+        createTable();
+    }
+    fillTable();
 }
+onPageLoad();
