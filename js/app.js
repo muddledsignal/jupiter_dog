@@ -8,7 +8,7 @@ var assortedGameArrays = {
 }
 
 var globalVariables = {
-    bulletSpeed: 5,
+    bulletSpeed: 4,
     maxCanvasX: 1200,
     maxCanvasY: 600,
     explosionDurationCount: 60,
@@ -20,7 +20,7 @@ var globalVariables = {
     samTimerResetVAlue: 600,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
-    enemyRadius: 30,
+    enemyRadius: 35,
     motionDelay: 50,
 }
 
@@ -53,10 +53,10 @@ function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterp
     this.dead = false;
     this.gunCooldownTimer = 0
     if (type = 'Nicholas') {
-        this.gunCooldownTimerResetsTo = 20;
+        this.gunCooldownTimerResetsTo = 25;
     }
     else if (type = 'Koko') {
-        this.gunCooldownTimerResetsTo = 30;
+        this.gunCooldownTimerResetsTo = 35;
     }
     else if (type = 'Sam') {
         this.gunCooldownTimerResetsTo = 10;
@@ -92,8 +92,8 @@ function moveAllEnemies() {
     for (var i in assortedGameArrays.enemies) {
         var currentEnemy = assortedGameArrays.enemies[i];
         //move object
-        currentEnemy.xPosition += 0.2 * currentEnemy.xVelocity;
-        currentEnemy.yPosition += 0.2 * currentEnemy.yVelocity;
+        currentEnemy.xPosition += 0.23 * currentEnemy.xVelocity;
+        currentEnemy.yPosition += 0.13 * currentEnemy.yVelocity;
 
         //calculate velocity at current position  (used next iteration to move objects)
         currentEnemy.xVelocity += 0.1 * (currentEnemy.xCenterpoint - currentEnemy.xPosition);
@@ -112,7 +112,8 @@ function movePlayer() {
     player.xPosition += player.velocity * player.movementDirection;
 
     //If player is moving off the page, move him back
-    if (player.xPosition < 5 || player.xPosition > globalVariables.globamaxCanvasX-5){
+    debugger
+    if (player.xPosition < 5 || player.xPosition > globalVariables.maxCanvasX -5){
         player.xPosition -= player.velocity * player.movementDirection;
     }
 }
@@ -254,11 +255,11 @@ function handleAllDeadEnemies() {
 function newEnemyParameters() {
 
     var newEnemyObject = {
-        xPosInitial: Math.random() * (globalVariables.maxCanvasX - 300) + 150,
+        xPosInitial: Math.random() * (globalVariables.maxCanvasX - 350) + 175,
         xCenterpoint: Math.random() * (globalVariables.maxCanvasX - 800) + 400,
         yPosInitial: Math.random() * (globalVariables.maxCanvasY - 300) + 150,
         yCenterpoint: Math.random() * (globalVariables.maxCanvasY - 400) + 200,
-        yVelocityInitial: Math.random() * 15,
+        yVelocityInitial: Math.random() * 30 - 15,
     };
 
     return newEnemyObject;
@@ -271,8 +272,8 @@ function spawnEnemies() {
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Nicholas', )
+        var parameters = newEnemyParameters();
+        new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
         globalVariables.nicholasTimerResetValue--;
     }
