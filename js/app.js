@@ -16,15 +16,18 @@ var globalVariables = {
     timeTillNicholasSpawns: 3,
     timeTillKokoSpawns: 3,
     timeTillSamSpawns: 3,
-    nicholasTimerResetValue: 90,
+    nicholasTimerResetValue: 80,
     kokoTimerResetValue: 50,
-    samTimerResetVAlue: 130,
+    samTimerResetVAlue: 125,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 35,
     motionDelay: 50,
     demiTimerDuration: 30,
     tika: '',
+    numberOfKokoToSpawn: 1,
+    numberOfNicholasToSpawn: 1,
+    numberOfSamToSpawn: 1,
 }
 
 //      Object Literal for Player    ======================
@@ -336,24 +339,33 @@ function spawnEnemies() {
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns < 1) {
-        var parameters = newEnemyParameters();
-        new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
-        globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
-        globalVariables.nicholasTimerResetValue--;
+        for (var i = 1; i < globalVariables.numberOfNicholasToSpawn + 1; i++) {
+            var parameters = newEnemyParameters();
+            new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
+            globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
+            // globalVariables.nicholasTimerResetValue--;
+        }
+        globalVariables.numberOfNicholasToSpawn += 0.2;
     }
 
     if (globalVariables.timeTillKokoSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko', )
-        globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
-        globalVariables.kokoTimerResetValue--;
+        for (var i = 1; i < globalVariables.numberOfKokoToSpawn + 1; i++) {
+            var no = newEnemyParameters();
+            new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko', )
+            globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
+            // globalVariables.kokoTimerResetValue--;
+        }
+        globalVariables.numberOfKokoToSpawn += 0.2;
     }
 
     if (globalVariables.timeTillSamSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam', )
-        globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
-        globalVariables.samTimerResetValue--;
+        for (var i = 1; i < globalVariables.numberOfNicholasToSpawn + 1; i++) {
+            var no = newEnemyParameters();
+            new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam', )
+            globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
+            // globalVariables.samTimerResetValue--;
+        }
+        globalVariables.numberOfSamToSpawn += 0.2;
     }
 }
 
