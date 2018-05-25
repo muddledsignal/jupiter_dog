@@ -1,68 +1,79 @@
 
-main {
+
+main{
+    position:relative;
+}
+#galaxy{
     background-image: url(../img/galaxybackground-color.jpg);
-    height: 600px;
+    margin-top:20px;
+    width: 100%;
+    height:600px;
+    z-index:1;
 }
 
-#score {
-    /* opacity: .6;
-    filter: alpha(opacity=50); */
-}
+table{
+    position:absolute;
+    /* border: 3px rgb(48, 28, 221) solid; */
+    background-color:rgb(5, 0, 3);
+    opacity:0.75;
+    top:40%;
+    transform: translate(-50%, -50%);
+    margin-left:50%;
+    margin-right:50%;
+    width: 500px;
+    z-index:2
 
-#score {
-    margin-top:100px;
-    /* border:solid red 2px; */
-    margin: 0 auto;
-    margin-top: 50px;
-    width: 400px;
-    /* background: #444; */
 }
-
-#score {
-    font-family: 'Press Start 2P', cursive;
-    text-transform: uppercase;
-    color: white;
-}
-
 
 
 th {
+
     font-size: 30px;
-    padding: 30px;
+    /* padding: 10px; */
     /* text-align: left; */
     /* display: flex; */
     /* justify-content: space-between; */
+    border-bottom: 1px white solid;
+    color:rgb(245, 243, 250);
+    border: 2px solid  rgb(29, 149, 247);
+    font-family: 'Press Start 2P', cursive;
 
 } 
 
 td {
     /* border-bottom:dashed rgb(63, 255, 89) 2px; */
-    padding-left:30px;
+    /* padding-left:10px; */
     padding-top: 20px;
     font-size: 20px;
-    /* text-align: right; */
+    text-align: left;
+    color:rgb(245, 243, 250);
+    /* border-left: 2px dashed rgb(192, 255, 192); */
+    font-family: 'Press Start 2P', cursive;
+    border: 2px solid  rgb(29, 149, 247);
+
 }
 
+
 #newscore {
-    border: solid rgb(255, 0, 212) 2px;
-    width: 300px;
-    margin: 0px auto;
-    margin-top: 40px;
-    color: white;
+    position: absolute;
+    width: 500px;
     background-color: #333;
-    padding: 10px;
-    /* font-family: 'Saira Condensed', sans-serif; */
     font-family: 'Press Start 2P', cursive;
-    font-weight: bold;
-    /* text-align: center; */
-    line-height: 15px;
-    border-radius: 4px;
-    text-transform: uppercase;
+    background-color:rgb(5, 0, 3);
+    /* opacity:0.5; */
+    color: white;
+    top:73%;
+    transform: translate(-50%, -50%);
+    margin-left:50%;
+    margin-right:50%;
+    border: 2px solid  rgb(29, 149, 247);
+
 }
+
 
 label p {
     text-align: left;
-    font-size: 14px;
+    font-size: 20px;
 }
 
 label input {
@@ -75,5 +86,11 @@ legend {
 }
 
 button {
-    /* width: 200px; */
+    width: 250px;
+    height:30px;
+    font-family: 'Press Start 2P', cursive;
+    float:right;
+    margin-bottom:10px;
+    margin-right:15px;
+
 }
