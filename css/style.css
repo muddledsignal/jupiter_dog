@@ -8,6 +8,10 @@ font-family: 'Saira Condensed', sans-serif;
 font-family: 'Homenaje', sans-serif;
 font-family: 'Bungee Inline', cursive; */
 
+p{
+    line-height: 22px;
+    font-size: 18px;
+}
 header {
     height: 70px;
     /* border: dotted blue 5px; */
@@ -41,19 +45,17 @@ nav li{
     display:inline-block;
     float: right;
     margin-left: 20px;
-    
-
-    
+      
 }
 nav a{
-    color:rgb(78, 116, 240);
+    color:rgb(36, 37, 39);
     font-family:'Arial, Helvetica', sans-serif; 
     font-size: 12px;  
     text-transform: uppercase;
     font:bold;
 }
 a:hover {
-    color: rgb(241, 112, 25);
+    color: rgb(252, 11, 160);
 }
 
 body {
