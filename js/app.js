@@ -648,10 +648,10 @@ function inGame() {
 
 function worstSolutionEver() {
     inGame();
-    setTimeout(worstSolutionEver2, globalVariables.motionDelay);
-}
-
-function worstSolutionEver2() {
-    inGame();
     setTimeout(worstSolutionEver, globalVariables.motionDelay);
 }
+
+// function worstSolutionEver2() {
+//     inGame();
+//     setTimeout(worstSolutionEver, globalVariables.motionDelay);
+// }
