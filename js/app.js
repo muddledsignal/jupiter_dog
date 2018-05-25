@@ -6,7 +6,7 @@ var assortedGameArrays = {
     playerBullets: [],
     explosionLocations: [],
     demis: [],
-    explosionsnark: ['BOOM!', 'UN-FREAKING-DEFINED!', 'DEAD!', 'TOO EASY!', 'WTF!', 'BAD WOLF', 'BOOM!', 'KILLJOY!', 'TAKE THAT!', 'N00B!', 'NAN!', '404!']
+    explosionsnark: ['BOOM!', 'UNDEFINED!', 'DEAD!', 'TOO EASY!', 'WTF!', 'BAD WOLF', 'BOOM!', 'KILLJOY!', 'TAKE THAT!', 'N00B!', 'NAN!', '404!', 'WUT?']
 }
 
 var globalVariables = {
