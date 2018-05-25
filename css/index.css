@@ -59,7 +59,7 @@ main img{
     float:right;
     padding-right:30px;
     text-align: left;
-    margin-top:25px;
+    margin-top:30px;
     /* overflow:scroll; */
     height:270px;
     font-family: 'Saira Condensed', sans-serif;
@@ -68,7 +68,6 @@ main img{
 
 #concept{
     position: absolute;
-
     font-weight: bolder;
     height:25px;
     font-size: 20px;
