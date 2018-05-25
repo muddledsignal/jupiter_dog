@@ -40,7 +40,7 @@ body {
     /* background-color: #20201f; */
 }
 
- main{
+ main {
     margin-top:450px;
     height:1100px;
 } 
@@ -91,4 +91,8 @@ h1 {
 .pix {
     width: 250px;
     height: 250px;
+}
+
+p {
+    font-size: 14px;
 }
