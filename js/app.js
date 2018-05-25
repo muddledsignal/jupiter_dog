@@ -6,13 +6,14 @@ var assortedGameArrays = {
     playerBullets: [],
     explosionLocations: [],
     demis: [],
+    explosionsnark: ['BOOM!', 'UN-FREAKING-DEFINED!', 'DEAD!', 'TOO EASY!', 'WTF!', 'BAD WOLF', 'BOOM!', 'KILLJOY!', 'TAKE THAT!', 'N00B!', 'NAN!', '404!']
 }
 
 var globalVariables = {
     bulletSpeed: 4,
     maxCanvasX: 1200,
     maxCanvasY: 600,
-    explosionDurationCount: 10,
+    explosionDurationCount: 40,
     timeTillNicholasSpawns: 3,
     timeTillKokoSpawns: 3,
     timeTillSamSpawns: 20,
@@ -209,7 +210,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
                 (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
                 assortedGameArrays.demis.splice(i, 1);
                 globalVariables.score += 5000;
-                resetEverything();
+                demiDestroysEverything();
             }
         }
 
@@ -268,8 +269,10 @@ function removeStrayExplosions() {
 
 }
 
-function resetEverything() {
-    assortedGameArrays.enemies = [];
+function demiDestroysEverything() {
+    for(var i = assortedGameArrays.enemies.length-1; i>-1;i--){
+        assortedGameArrays.enemies[i].dead=true;
+    }
     assortedGameArrays.enemyBullets = [];
     assortedGameArrays.playerBullets = [];
 }
@@ -316,7 +319,7 @@ function handleAllDeadEnemies() {
             new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
             var deadEnemy = assortedGameArrays.enemies.splice(i, 1);
             playerScorePlusPlus(deadEnemy[0].type);
-            if (deadEnemy[0].type === 'Sam') {
+            if (deadEnemy[0].type === 'Sam' && globalVariables.tikashowing === false) {
                 new Demi(deadEnemy[0].xPosition, deadEnemy[0].yPosition);
             }
         }
@@ -526,9 +529,13 @@ function drawScore() {
 
 function drawExplosions(index) {
     var currentExplosion = assortedGameArrays.explosionLocations[index]
-    globalVariables.ctx.font = "30px 'Press Start 2P'"
-    globalVariables.ctx.fillText("Boom!", currentExplosion.xPosition, currentExplosion.yPosition);
-    currentExplosion.count--
+    if (currentExplosion.count === globalVariables.explosionDurationCount) 
+    {
+        currentExplosion.snarkytext = assortedGameArrays.explosionsnark[Math.floor(Math.random() * assortedGameArrays.explosionsnark.length)];
+    }
+    globalVariables.ctx.font = "30px 'Press Start 2P'";
+    globalVariables.ctx.fillText(currentExplosion.snarkytext, currentExplosion.xPosition, currentExplosion.yPosition);
+    currentExplosion.count--;
 }
 //  ==========  End section on rendering to page
 
