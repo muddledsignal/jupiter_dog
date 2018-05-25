@@ -6,27 +6,33 @@ var assortedGameArrays = {
     playerBullets: [],
     explosionLocations: [],
     demis: [],
+    explosionsnark: ['BOOM!', 'UNDEFINED!', 'DEAD!', 'TOO EASY!', 'WTF!', 'BAD WOLF', 'BOOM!', 'KILLJOY!', 'TAKE THAT!', 'N00B!', 'NAN!', '404!', 'WUT?']
 }
 
 var globalVariables = {
     bulletSpeed: 4,
     maxCanvasX: 1200,
     maxCanvasY: 600,
-    explosionDurationCount: 60,
+    explosionDurationCount: 40,
     timeTillNicholasSpawns: 3,
     timeTillKokoSpawns: 3,
-    timeTillSamSpawns: 3,
-    nicholasTimerResetValue: 90,
+    timeTillSamSpawns: 20,
+    nicholasTimerResetValue: 80,
     kokoTimerResetValue: 50,
-    samTimerResetVAlue: 130,
+    samTimerResetValue: 125,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 35,
     motionDelay: 50,
     demiTimerDuration: 30,
+    tika: '',
+    tikashowing: false,
+    numberOfKokoToSpawn: 1,
+    numberOfNicholasToSpawn: 1,
+    numberOfSamToSpawn: 1,
 }
 
-//  =====================    Object Literal for Player    ======================
+//      Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
     image: 'PlayerImageFileFilepath',
@@ -56,13 +62,13 @@ function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterp
     this.dead = false;
     this.gunCooldownTimer = 0
     if (type = 'Nicholas') {
-        this.gunCooldownTimerResetsTo = 25;
-    }
-    else if (type = 'Koko') {
         this.gunCooldownTimerResetsTo = 35;
     }
+    else if (type = 'Koko') {
+        this.gunCooldownTimerResetsTo = 55;
+    }
     else if (type = 'Sam') {
-        this.gunCooldownTimerResetsTo = 10;
+        this.gunCooldownTimerResetsTo = 20;
     }
 
     assortedGameArrays.enemies.push(this);
@@ -144,7 +150,7 @@ function movePlayer() {
 function moveAllPlayerBullets() {
     for (var i in assortedGameArrays.playerBullets) {
         var currentBullet = assortedGameArrays.playerBullets[i];
-        currentBullet.yPosition -= globalVariables.bulletSpeed;
+        currentBullet.yPosition -= globalVariables.bulletSpeed + 3;
     }
 }
 
@@ -157,7 +163,7 @@ function detectCollisionsBetweenPlayerAndAllEnemies() {
         // looks to see if enemy space-ships are colliding with the player  Treats player as square.
         var currentEnemy = assortedGameArrays.enemies[i]
         //  Is the Y value between Player +/- Radius   (Also, may want to consider including object radius)
-        if ((currentEnemy.yPosition > (player.yPosition - player.radius))
+        if ((currentEnemy.yPosition > (player.yPosition - player.radius - 10))
             &
             (currentEnemy.yPosition < (player.yPosition + player.radius))) {
 
@@ -176,7 +182,7 @@ function detectCollisionsBetweenPlayerAndAnyBullet() {
 
 
         var currentBullet = assortedGameArrays.enemyBullets[i];
-        if ((currentBullet.yPosition > (player.yPosition - player.radius))
+        if ((currentBullet.yPosition > (player.yPosition - player.radius - 10))
             &
             (currentBullet.yPosition < (player.yPosition + player.radius))) {
 
@@ -185,7 +191,6 @@ function detectCollisionsBetweenPlayerAndAnyBullet() {
                 &
                 (currentBullet.xPosition < (player.xPosition + player.radius))) {
                 player.dead = true;
-                //Run function for when player gets hit by ball of death.
             }
         }
     }
@@ -195,7 +200,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
     for (var i = assortedGameArrays.demis.length - 1; i > -1; i--) {
         var currentDemi = assortedGameArrays.demis[i];
 
-        if ((currentDemi.yPosition > (player.yPosition - player.radius * 3))
+        if ((currentDemi.yPosition > (player.yPosition - player.radius * 3 - 10))
             &
             (currentDemi.yPosition < (player.yPosition + player.radius * 3))) {
 
@@ -205,7 +210,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
                 (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
                 assortedGameArrays.demis.splice(i, 1);
                 globalVariables.score += 5000;
-                player.demiTimer = globalVariables.demiTimerDuration;
+                demiDestroysEverything();
             }
         }
 
@@ -255,6 +260,23 @@ function removeStrayDemis() {
     }
 }
 
+function removeStrayExplosions() {
+    for (var i = assortedGameArrays.explosionLocations.length - 1; i > -1; i--) {
+        if (assortedGameArrays.explosionLocations[i].count < 1) {
+            assortedGameArrays.explosionLocations.splice(i, 1);
+        }
+    }
+
+}
+
+function demiDestroysEverything() {
+    for(var i = assortedGameArrays.enemies.length-1; i>-1;i--){
+        assortedGameArrays.enemies[i].dead=true;
+    }
+    assortedGameArrays.enemyBullets = [];
+    assortedGameArrays.playerBullets = [];
+}
+
 //  For loop to remove all the enemy bullets that have gone off the bottom
 for (var i = assortedGameArrays.enemyBullets.length - 1; i > -1; i--) {
     if (assortedGameArrays.enemyBullets[i].yPosition > globalVariables.maxCanvasY) {
@@ -263,9 +285,6 @@ for (var i = assortedGameArrays.enemyBullets.length - 1; i > -1; i--) {
 }
 
 
-//  This function is currently useless.   Eventually, it will remove explosions from the page
-//  that have been displayed for too long.   The fact that it's already written is proof that
-//  Trying to code at 1 am is a freaking terrible idea.
 function checkNRemoveExplosions() {
     for (var i = assortedGameArrays.explosionLocations.length; i > -1; i--) {
         if (assortedGameArrays.explosionLocations.count < 1) {
@@ -297,11 +316,10 @@ function handleAllDeadEnemies() {
     for (var i = assortedGameArrays.enemies.length - 1; i > -1; i--) {
         var currentEnemy = assortedGameArrays.enemies[i];
         if (currentEnemy.dead) {
-            // new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
+            new Explosion(currentEnemy.xPosition, currentEnemy.yPosition);
             var deadEnemy = assortedGameArrays.enemies.splice(i, 1);
-            // debugger
             playerScorePlusPlus(deadEnemy[0].type);
-            if (deadEnemy[0].type === 'Sam') {
+            if (deadEnemy[0].type === 'Sam' && globalVariables.tikashowing === false) {
                 new Demi(deadEnemy[0].xPosition, deadEnemy[0].yPosition);
             }
         }
@@ -330,24 +348,30 @@ function spawnEnemies() {
 
     //  Check to see if any enemies should spawn:
     if (globalVariables.timeTillNicholasSpawns < 1) {
-        var parameters = newEnemyParameters();
-        new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
+        for (var i = 1; i < globalVariables.numberOfNicholasToSpawn + 1; i++) {
+            var parameters = newEnemyParameters();
+            new Enemy(parameters.xPosInitial, parameters.xCenterpoint, parameters.yPosInitial, parameters.yVelocityInitial, parameters.yCenterpoint, 'Nicholas', )
+        }
         globalVariables.timeTillNicholasSpawns = globalVariables.nicholasTimerResetValue;
-        globalVariables.nicholasTimerResetValue--;
+        globalVariables.numberOfNicholasToSpawn += 0.2;
     }
 
     if (globalVariables.timeTillKokoSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko', )
+        for (var i = 1; i < globalVariables.numberOfKokoToSpawn + 1; i++) {
+            var no = newEnemyParameters();
+            new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Koko', )
+        }
         globalVariables.timeTillKokoSpawns = globalVariables.kokoTimerResetValue;
-        globalVariables.kokoTimerResetValue--;
+        globalVariables.numberOfKokoToSpawn += 0.2;
     }
 
     if (globalVariables.timeTillSamSpawns < 1) {
-        var no = newEnemyParameters();
-        new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam', )
-        globalVariables.timeTillSamSpawns = globalVariables.samTimerResetValue;
-        globalVariables.samTimerResetValue--;
+        for (var i = 1; i < globalVariables.numberOfSamToSpawn + 1; i++) {
+            var no = newEnemyParameters();
+            new Enemy(no.xPosInitial, no.xCenterpoint, no.yPosInitial, no.yVelocityInitial, no.yCenterpoint, 'Sam', );
+        }
+        globalVariables.timeTillSamSpawns = 1 * globalVariables.samTimerResetValue;
+        globalVariables.numberOfSamToSpawn += 0.2;
     }
 }
 
@@ -394,7 +418,7 @@ function mouseWasClicked(event) {
 
 function keyPressedEvent(event) {
 
-    if (event.key === 'a') {
+    if (event.key === 'a' && globalVariables.tika !== 'tik') {
         player.movementDirection = -1
     }
     else if (event.key === 'd') {
@@ -411,7 +435,19 @@ function keyPressedEvent(event) {
         player.immortal = false;
         player.dead = false;
     }
-
+    else if (event.key === 't') {
+        globalVariables.tika = 't'
+    }
+    else if (event.key === 'i') {
+        globalVariables.tika = globalVariables.tika + 'i'
+    }
+    else if (event.key === 'k') {
+        globalVariables.tika = globalVariables.tika + 'k'
+    }
+    else if (event.key === 'a' && globalVariables.tika === 'tik') {
+        globalVariables.tika = ''
+        globalVariables.tikashowing = !globalVariables.tikashowing;
+    }
 }
 
 function keyDepressedEvent(event) {
@@ -438,14 +474,23 @@ function playershootsgun() {
 
 //  Resets to a blank canvas.
 function createCanvas() {
-    var image = document.getElementById('codefellows');
+    if (globalVariables.tikashowing === false) {
+        var image = document.getElementById('codefellows');
+    }
+    else {
+        var image = document.getElementById('Tika');
+    }
     globalVariables.ctx.drawImage(image, 0, 0, globalVariables.maxCanvasX, globalVariables.maxCanvasY);
 }
 
 function drawPlayer() {
-    var image = document.getElementById(player.image)
+    if (player.immortal) {
+        var image = document.getElementById('CodefellowsLogo')
+    }
+    else {
+        var image = document.getElementById(player.image)
+    }
     globalVariables.ctx.drawImage(image, player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius + 4, 2 * player.radius + 4);
-
 }
 
 function drawEnemy(currentEnemy) {
@@ -458,7 +503,7 @@ function drawEnemy(currentEnemy) {
 function drawBullet(xPosition, yPosition, shooter) {
     if (shooter === 'Playa') {
         globalVariables.ctx.fillStyle = "blue";
-        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13)
+        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13);
     }
 
     if (shooter === 'Koko') {
@@ -475,6 +520,22 @@ function drawBullet(xPosition, yPosition, shooter) {
         globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13);
     }
 
+}
+
+function drawScore() {
+    globalVariables.ctx.font = "40px 'Press Start 2P'"
+    globalVariables.ctx.fillText("Score: " + player.score, 100, 70);
+}
+
+function drawExplosions(index) {
+    var currentExplosion = assortedGameArrays.explosionLocations[index]
+    if (currentExplosion.count === globalVariables.explosionDurationCount) 
+    {
+        currentExplosion.snarkytext = assortedGameArrays.explosionsnark[Math.floor(Math.random() * assortedGameArrays.explosionsnark.length)];
+    }
+    globalVariables.ctx.font = "30px 'Press Start 2P'";
+    globalVariables.ctx.fillText(currentExplosion.snarkytext, currentExplosion.xPosition, currentExplosion.yPosition);
+    currentExplosion.count--;
 }
 //  ==========  End section on rendering to page
 
@@ -509,6 +570,8 @@ function moveEverything() {
     removeStrayBullets();
 
     removeStrayDemis();
+
+    removeStrayExplosions();
 }
 
 function detectEverything() {
@@ -544,6 +607,13 @@ function drawEverything() {
     for (var i in assortedGameArrays.demis) {
         assortedGameArrays.demis[i].drawDemi();
     }
+
+    drawScore();
+
+    for (var i in assortedGameArrays.explosionLocations) {
+        drawExplosions(i);
+    }
+
 }
 
 function everythingShoots() {
@@ -573,6 +643,7 @@ function inGame() {
 
     spawnEnemies();
     player.gunCooldownTimer--
+    player.score++
 }
 
 function worstSolutionEver() {

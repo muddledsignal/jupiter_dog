@@ -34,6 +34,8 @@ function fillTable() {
     newTr.append(th2);
     cells.append(newTr);
 
+    allPlayer.sort(compare);
+
     for (var i = 0; i < 5; i++) {
 
         var newTr = document.createElement('tr');
@@ -59,7 +61,7 @@ function newHighScore(event) {
     document.getElementById('newscore').innerHTML = '';
     allPlayer.push(player);
 
-    allPlayer.sort(compare);
+   
     score.innerHTML = '';
     fillTable();
     debugger
@@ -80,10 +82,11 @@ function compare(a, b) {
 function onPageLoad() {
     if (localStorage.score) {
         player.score = JSON.parse(localStorage.getItem('score'));
-        document.getElementById('playerscore').textContent=stringify(player.score);
+        document.getElementById('playerscore').textContent=(''+player.score);
     }
 
     if (localStorage.highScores){
+        debugger
         allPlayer = JSON.parse(localStorage.getItem('highScores'));
     }
     else {
