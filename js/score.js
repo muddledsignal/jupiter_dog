@@ -57,14 +57,13 @@ function newHighScore(event) {
     event.preventDefault();
     player.name = event.target.name.value;
     document.getElementById('newscore').innerHTML = '';
-
     allPlayer.push(player);
 
     allPlayer.sort(compare);
     score.innerHTML = '';
     fillTable();
-
-    localStorage.setItem('highScores',JSON.stringify(allPlayer));
+    debugger
+    localStorage.setItem('highScores', JSON.stringify(allPlayer));
 }
 
 function compare(a, b) {
@@ -81,9 +80,11 @@ function compare(a, b) {
 function onPageLoad() {
     if (localStorage.score) {
         player.score = JSON.parse(localStorage.getItem('score'));
+        document.getElementById('playerscore').textContent=stringify(player.score);
     }
+
     if (localStorage.highScores){
-        allPlayer = JSON.parse(localStorage.getItem('highScores'))
+        allPlayer = JSON.parse(localStorage.getItem('highScores'));
     }
     else {
         createTable();
