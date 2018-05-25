@@ -21,14 +21,30 @@ h2{
     padding-left:10px;
 }
 
-#instructions p{
+#instructions {
+    width: 220px;
+    height: 418px;
     border: solid #ddd 4px;
-    overflow:scroll;
-    height:400px;
+    overflow: scroll;
     border-radius: 4px;
     font-family:'Arial, Helvetica', sans-serif; 
 }
-p{
+
+#instructions img{
+    width: 180px;
+    display: block;
+    margin: 0 auto;
+}
+
+#instructions b {
+    font-size: 25px;
+    border: solid #ddd 4px;
+    border-radius: 4px;
+    padding: 3px;
+    line-height: 2;
+}
+
+p {
    padding:10px;
 }
 
