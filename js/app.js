@@ -16,9 +16,9 @@ var globalVariables = {
     timeTillNicholasSpawns: 3,
     timeTillKokoSpawns: 3,
     timeTillSamSpawns: 3,
-    nicholasTimerResetValue: 140,
-    kokoTimerResetValue: 80,
-    samTimerResetVAlue: 200,
+    nicholasTimerResetValue: 90,
+    kokoTimerResetValue: 50,
+    samTimerResetVAlue: 130,
     mainCanvas: document.getElementById("background"),
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 35,
@@ -67,15 +67,17 @@ function Enemy(xPosInitial, xCenterpoint, yPosInital, yVelocityInitial, yCenterp
     assortedGameArrays.enemies.push(this);
 };
 
-function EnemyBullet(xPosInitial, yPosInital) {
+function EnemyBullet(xPosInitial, yPosInital, shooter) {
     this.xPosition = xPosInitial;
     this.yPosition = yPosInital;
+    this.shooter = shooter
     assortedGameArrays.enemyBullets.push(this);
 };
 
 function PlayerBullet() {
     this.xPosition = player.xPosition;
     this.yPosition = player.yPosition - player.radius;
+    this.Shooter = 'Playa';
     assortedGameArrays.playerBullets.push(this);
 };
 
@@ -189,10 +191,8 @@ function detectCollisionsBetweenPlayerAndAnyBullet() {
 }
 
 function detectCollisionsBetweenPlayerAndDemi() {
-    for (var i = assortedGameArrays.demis.length -1; i > -1; i--) {
-
+    for (var i = assortedGameArrays.demis.length - 1; i > -1; i--) {
         var currentDemi = assortedGameArrays.demis[i];
-        // debugger
 
         if ((currentDemi.yPosition > (player.yPosition - player.radius * 3))
             &
@@ -203,6 +203,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
                 &
                 (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
                 assortedGameArrays.demis.splice(i, 1);
+                globalVariables.score += 5000;
             }
         }
 
@@ -284,7 +285,7 @@ function playerScorePlusPlus(deadEnemyType) {
     }
 
     if (deadEnemyType === 'Sam') {
-        player.score += 5000;
+        player.score += 1000;
 
     }
 }
@@ -357,7 +358,7 @@ function allEnemiesFireAtWill() {
         var currentEnemy = assortedGameArrays.enemies[i];
         currentEnemy.gunCooldownTimer--;
         if (currentEnemy.gunCooldownTimer < 1) {
-            new EnemyBullet(currentEnemy.xPosition, currentEnemy.yPosition);
+            new EnemyBullet(currentEnemy.xPosition, currentEnemy.yPosition, currentEnemy.type);
             currentEnemy.gunCooldownTimer = currentEnemy.gunCooldownTimerResetsTo;
         }
     }
@@ -401,11 +402,12 @@ function keyPressedEvent(event) {
         event.preventDefault();
         player.tryingToShootGun = true;
     }
-    else if (event.key === 'p'  && player.immortal === false){
+    else if (event.key === 'p' && player.immortal === false) {
         player.immortal = true;
     }
-    else if (event.key === 'p'  && player.immortal === true){
+    else if (event.key === 'p' && player.immortal === true) {
         player.immortal = false;
+        player.dead = false;
     }
 
 }
@@ -443,7 +445,7 @@ function drawPlayer() {
     globalVariables.ctx.drawImage(image, player.xPosition - player.radius, player.yPosition - player.radius, 2 * player.radius + 4, 2 * player.radius + 4);
 
 }
-                     
+
 function drawEnemy(currentEnemy) {
 
     var image = document.getElementById(currentEnemy.type);
@@ -451,11 +453,27 @@ function drawEnemy(currentEnemy) {
 
 }
 
-function drawBullet(xPosition, yPosition) {
-    globalVariables.ctx.fillStyle = "purple";
-    globalVariables.ctx.fillRect(xPosition, yPosition, 3, 5);
-}
+function drawBullet(xPosition, yPosition, shooter) {
+    if (shooter === 'Playa') {
+        globalVariables.ctx.fillStyle = "blue";
+        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13)
+    }
 
+    if (shooter === 'Koko') {
+        globalVariables.ctx.fillStyle = "#ff3300";
+        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13);
+    }
+    if (shooter === 'Nicholas') {
+        globalVariables.ctx.fillStyle = "#ff1493";
+        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13);
+    }
+
+    if (shooter === 'Sam') {
+        globalVariables.ctx.fillStyle = '#ccff00';
+        globalVariables.ctx.fillRect(xPosition, yPosition, 8, 13);
+    }
+
+}
 //  ==========  End section on rendering to page
 
 //  =============  handle player death  ============
@@ -513,12 +531,12 @@ function drawEverything() {
     for (var i in assortedGameArrays.playerBullets) {
 
         var currentBullet = assortedGameArrays.playerBullets[i];
-        drawBullet(currentBullet.xPosition, currentBullet.yPosition);
+        drawBullet(currentBullet.xPosition, currentBullet.yPosition, currentBullet.Shooter);
     }
     // this for loop draws all the enemy bullets
     for (var i in assortedGameArrays.enemyBullets) {
         var currentBullet = assortedGameArrays.enemyBullets[i];
-        drawBullet(currentBullet.xPosition, currentBullet.yPosition);
+        drawBullet(currentBullet.xPosition, currentBullet.yPosition, currentBullet.shooter);
     }
 
     for (var i in assortedGameArrays.demis) {
@@ -549,7 +567,7 @@ function inGame() {
 
     everythingShoots();
 
-    if (player.dead === true && player.immortal === false ) { playerDied() }
+    if (player.dead === true && player.immortal === false) { playerDied() }
 
     spawnEnemies();
     player.gunCooldownTimer--

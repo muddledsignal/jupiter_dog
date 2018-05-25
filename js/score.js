@@ -80,9 +80,11 @@ function compare(a, b) {
 function onPageLoad() {
     if (localStorage.score) {
         player.score = JSON.parse(localStorage.getItem('score'));
+        document.getElementById('playerscore').textContent=stringify(player.score);
     }
+
     if (localStorage.highScores){
-        allPlayer = JSON.parse(localStorage.getItem('highScores'))
+        allPlayer = JSON.parse(localStorage.getItem('highScores'));
     }
     else {
         createTable();
