@@ -87,3 +87,8 @@ td {
 h1 {
     font-size: 25px;
 }
+
+.pix {
+    width: 250px;
+    height: 250px;
+}
