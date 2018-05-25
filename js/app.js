@@ -23,6 +23,7 @@ var globalVariables = {
     ctx: document.getElementById("background").getContext('2d'),
     enemyRadius: 35,
     motionDelay: 50,
+    demiTimerDuration: 30,
 }
 
 //  =====================    Object Literal for Player    ======================
@@ -204,6 +205,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
                 (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
                 assortedGameArrays.demis.splice(i, 1);
                 globalVariables.score += 5000;
+                player.demiTimer = globalVariables.demiTimerDuration;
             }
         }
 
