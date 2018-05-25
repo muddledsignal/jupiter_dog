@@ -24,9 +24,10 @@ var globalVariables = {
     enemyRadius: 35,
     motionDelay: 50,
     demiTimerDuration: 30,
+    tika: '',
 }
 
-//  =====================    Object Literal for Player    ======================
+//      Object Literal for Player    ======================
 var player = {
     xPosition: 400,  // should be Canvas Width /2, to start in the center
     image: 'PlayerImageFileFilepath',
@@ -185,7 +186,6 @@ function detectCollisionsBetweenPlayerAndAnyBullet() {
                 &
                 (currentBullet.xPosition < (player.xPosition + player.radius))) {
                 player.dead = true;
-                //Run function for when player gets hit by ball of death.
             }
         }
     }
@@ -205,7 +205,7 @@ function detectCollisionsBetweenPlayerAndDemi() {
                 (currentDemi.xPosition < (player.xPosition + player.radius * 3))) {
                 assortedGameArrays.demis.splice(i, 1);
                 globalVariables.score += 5000;
-                player.demiTimer = globalVariables.demiTimerDuration;
+                resetEverything();
             }
         }
 
@@ -253,6 +253,12 @@ function removeStrayDemis() {
             assortedGameArrays.demis.splice(i, 1);
         }
     }
+}
+
+function resetEverything() {
+    assortedGameArrays.enemies = [];
+    assortedGameArrays.enemyBullets = [];
+    assortedGameArrays.playerBullets = [];
 }
 
 //  For loop to remove all the enemy bullets that have gone off the bottom
@@ -394,7 +400,7 @@ function mouseWasClicked(event) {
 
 function keyPressedEvent(event) {
 
-    if (event.key === 'a') {
+    if (event.key === 'a' && globalVariables.tika !== 'tik') {
         player.movementDirection = -1
     }
     else if (event.key === 'd') {
@@ -411,7 +417,18 @@ function keyPressedEvent(event) {
         player.immortal = false;
         player.dead = false;
     }
-
+    else if (event.key === 't') {
+        globalVariables.tika = 't'
+    }
+    else if (event.key === 'i') {
+        globalVariables.tika = globalVariables.tika + 'i'
+    }
+    else if (event.key === 'k') {
+        globalVariables.tika = globalVariables.tika + 'k'
+    }
+    else if (event.key === 'a' && globalVariables.tika === 'tik') {
+        globalVariables.tika = globalVariables.tika + 'a'
+    }
 }
 
 function keyDepressedEvent(event) {
@@ -438,7 +455,12 @@ function playershootsgun() {
 
 //  Resets to a blank canvas.
 function createCanvas() {
-    var image = document.getElementById('codefellows');
+    if (globalVariables.tika !== 'tika') {
+        var image = document.getElementById('codefellows');
+    }
+    else {
+        var image = document.getElementById('Tika');
+    }
     globalVariables.ctx.drawImage(image, 0, 0, globalVariables.maxCanvasX, globalVariables.maxCanvasY);
 }
 
